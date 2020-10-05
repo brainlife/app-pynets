@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -l nodes=1:ppn=8,walltime=2:00:00
+#PBS -l nodes=1:ppn=16,walltime=8:00:00
 #PBS -l vmem=50gb
 #PBS -N pynet
 
@@ -136,7 +136,7 @@ ml=$(jq -r .ml config.json)
 tol=$(jq -r .tol config.json)
 [ "$tol" != "8" ] && optional="$optional -tol $tol"
 
-singularity run -e docker://dpys/pynets:fe4b88722b5e55b6ca50d1f0a440ce58d30d1f0c pynets \
+singularity run -e docker://dpys/pynets:6e505e4011b85b9bb30bfdb39ecd32eb6028a406 pynets \
     `pwd`/output \
     -id $(jq -r .id config.json) \
     -anat `pwd`/$(jq -r .t1 config.json) \
