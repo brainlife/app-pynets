@@ -89,7 +89,10 @@ else
 fi
 
 min_thr=$(jq -r .min_thr config.json)
-if [ $min_thr != "null" ];then
+max_thr=$(jq -r .max_thr config.json)
+step_thr=$(jq -r .step_thr config.json)
+thr=$(jq -r .thr config.json)
+if [ $min_thr != "null" ]; then
     optional="$optional -min_thr $min_thr"
     optional="$optional -max_thr $max_thr"
     optional="$optional -step_thr $step_thr"
