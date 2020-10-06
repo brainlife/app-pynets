@@ -95,7 +95,7 @@ if [[ $useratlas != "null" ]]; then
 fi
 
 atlas=$(jq -r .atlas config.json)
-if [[ $atlas != "null" ]]; thens
+if [[ $atlas != "null" ]]; then
     if [ $(echo -e "$atlas" | wc -l) -gt 1 ]; then
         optional="$optional -a"
         while IFS= read -r line ; do
