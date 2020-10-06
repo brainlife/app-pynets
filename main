@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -l nodes=1:ppn=8,walltime=2:00:00
+#PBS -l nodes=1:ppn=16,walltime=2:00:00
 #PBS -l vmem=50gb
 #PBS -N pynet
 
@@ -89,7 +89,10 @@ else
 fi
 
 min_thr=$(jq -r .min_thr config.json)
-if [ $min_thr != "null" ];then
+max_thr=$(jq -r .max_thr config.json)
+step_thr=$(jq -r .step_thr config.json)
+thr=$(jq -r .thr config.json)
+if [ $min_thr != "null" ]; then
     optional="$optional -min_thr $min_thr"
     optional="$optional -max_thr $max_thr"
     optional="$optional -step_thr $step_thr"
@@ -136,7 +139,7 @@ ml=$(jq -r .ml config.json)
 tol=$(jq -r .tol config.json)
 [ "$tol" != "8" ] && optional="$optional -tol $tol"
 
-singularity run -e docker://dpys/pynets:fc7c423fb99ade39e1f408721e93b97a12168aa0 pynets \
+singularity run -e docker://dpys/pynets:03a1f40583de5a7948e31741173994674a7450a2 pynets \
     `pwd`/output \
     -id $(jq -r .id config.json) \
     -anat `pwd`/$(jq -r .t1 config.json) \
