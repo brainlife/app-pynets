@@ -84,11 +84,11 @@ fi
 
 useratlas=$(jq -r .useratlas config.json)
 if [ $useratlas != "null" ]; then
-    if [ $(echo "$useratlas" | wc -l) -gt 1 ]; then
-        printf -v str_literal '%b' "$useratlas"
-        IFS=$'\n' read -r -a pieces <<<"$str_literal"
+    if [ $(echo -e "$useratlas" | wc -l) -gt 1 ]; then
+        IFS=$'\n' read -r -a pieces <<<`echo -e "$useratlas"`
+        optional="$optional -ua"
         for piece in "${pieces[@]}"; do
-            optional="$optional -ua $(pwd)/$piece"
+            optional="$optional $(pwd)/$piece"
         done
     else
         optional="$optional -ua $(pwd)/$useratlas"
@@ -97,11 +97,11 @@ fi
 
 atlas=$(jq -r .atlas config.json)
 if [ $atlas != "null" ]; then
-    if [ $(echo "$atlas" | wc -l) -gt 1 ]; then
-        printf -v str_literal '%b' "$atlas"
-        IFS=$'\n' read -r -a pieces <<<"$str_literal"
+    if [ $(echo -e "$atlas" | wc -l) -gt 1 ]; then
+        IFS=$'\n' read -r -a pieces <<<`echo -e "$atlas"`
+        optional="$optional -a"
         for piece in "${pieces[@]}"; do
-            optional="$optional -a $piece"
+            optional="$optional $piece"
         done
     else
         optional="$optional -a $atlas"
@@ -146,11 +146,11 @@ fi
 
 rsn=$(jq -r .n config.json)
 if [ "$rsn" != "null" ]; then
-    if [ $(echo "$rsn" | wc -l) -gt 1 ]; then
-        printf -v str_literal '%b' "$rsn"
-        IFS=$'\n' read -r -a pieces <<<"$str_literal"
+    if [ $(echo -e "$rsn" | wc -l) -gt 1 ]; then
+        IFS=$'\n' read -r -a pieces <<<`echo -e "$rsn"`
+        optional="$optional -n"
         for piece in "${pieces[@]}"; do
-            optional="$optional -n $piece"
+            optional="$optional $piece"
         done
     else
         optional="$optional -n $rsn"
@@ -159,11 +159,11 @@ fi
 
 em=$(jq -r .em config.json)
 if [ "$em" != "mean" ]; then
-    if [ $(echo "$em" | wc -l) -gt 1 ]; then
-        printf -v str_literal '%b' "$em"
-        IFS=$'\n' read -r -a pieces <<<"$str_literal"
+    if [ $(echo -e "$em" | wc -l) -gt 1 ]; then
+        IFS=$'\n' read -r -a pieces <<<`echo -e "$em"`
+        optional="$optional -em"
         for piece in "${pieces[@]}"; do
-            optional="$optional -em $piece"
+            optional="$optional $piece"
         done
     else
         optional="$optional -em $em"
@@ -172,11 +172,11 @@ fi
 
 sm=$(jq -r .sm config.json)
 if [ "$sm" != "0" ]; then
-    if [ $(echo "$sm" | wc -l) -gt 1 ]; then
-        printf -v str_literal '%b' "$sm"
-        IFS=$'\n' read -r -a pieces <<<"$str_literal"
+    if [ $(echo -e "$sm" | wc -l) -gt 1 ]; then
+        IFS=$'\n' read -r -a pieces <<<`echo -e "$sm"`
+        optional="$optional -sm"
         for piece in "${pieces[@]}"; do
-            optional="$optional -sm $piece"
+            optional="$optional $piece"
         done
     else
         optional="$optional -sm $sm"
@@ -185,11 +185,11 @@ fi
 
 hp=$(jq -r .hp config.json)
 if [ "$hp" != "0" ]; then
-    if [ $(echo "$hp" | wc -l) -gt 1 ]; then
-        printf -v str_literal '%b' "$hp"
-        IFS=$'\n' read -r -a pieces <<<"$str_literal"
+    if [ $(echo -e "$hp" | wc -l) -gt 1 ]; then
+        IFS=$'\n' read -r -a pieces <<<`echo -e "$hp"`
+        optional="$optional -hp"
         for piece in "${pieces[@]}"; do
-            optional="$optional -hp $piece"
+            optional="$optional $piece"
         done
     else
         optional="$optional -hp $hp"
@@ -198,11 +198,11 @@ fi
 
 dg=$(jq -r .dg config.json)
 if [ "$dg" != "det" ]; then
-    if [ $(echo "$dg" | wc -l) -gt 1 ]; then
-        printf -v str_literal '%b' "$dg"
-        IFS=$'\n' read -r -a pieces <<<"$str_literal"
+    if [ $(echo -e "$dg" | wc -l) -gt 1 ]; then
+        IFS=$'\n' read -r -a pieces <<<`echo -e "$dg"`
+        optional="$optional -dg"
         for piece in "${pieces[@]}"; do
-            optional="$optional -dg $piece"
+            optional="$optional $piece"
         done
     else
         optional="$optional -dg $dg"
@@ -211,11 +211,11 @@ fi
 
 ml=$(jq -r .ml config.json)
 if [ "$ml" != "20" ]; then
-    if [ $(echo "$ml" | wc -l) -gt 1 ]; then
-        printf -v str_literal '%b' "$ml"
-        IFS=$'\n' read -r -a pieces <<<"$str_literal"
+    if [ $(echo -e "$ml" | wc -l) -gt 1 ]; then
+        IFS=$'\n' read -r -a pieces <<<`echo -e "$ml"`
+        optional="$optional -ml"
         for piece in "${pieces[@]}"; do
-            optional="$optional -ml $piece"
+            optional="$optional $piece"
         done
     else
         optional="$optional -ml $ml"
@@ -223,12 +223,12 @@ if [ "$ml" != "20" ]; then
 fi
 
 tol=$(jq -r .tol config.json)
-if [ "$tol" != "8" ]; then
-    if [ $(echo "$tol" | wc -l) -gt 1 ]; then
-        printf -v str_literal '%b' "$tol"
-        IFS=$'\n' read -r -a pieces <<<"$str_literal"
+if [ "$tol" != "10" ]; then
+    if [ $(echo -e "$tol" | wc -l) -gt 1 ]; then
+        IFS=$'\n' read -r -a pieces <<<`echo -e "$tol"`
+        optional="$optional -tol"
         for piece in "${pieces[@]}"; do
-            optional="$optional -tol $piece"
+            optional="$optional $piece"
         done
     else
         optional="$optional -tol $tol"
