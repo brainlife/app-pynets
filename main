@@ -64,22 +64,22 @@ dwi=$(jq -r .dwi config.json)
 if [[ $dwi != "null" ]]; then
     bval=$(jq -r .bvals config.json)
     bvec=$(jq -r .bvecs config.json)
-    optional="$optional -dwi $DIR/$(basename $dwi) -bval $DIR/$(basename $bval) -bvec $DIR/$(basename $bvec)"
+    optional="$optional -dwi $DIR/$dwi -bval $DIR/$bval -bvec $DIR/$bvec"
 fi
 
 bold=$(jq -r .bold config.json)
 if [[ $bold != "null" ]];then
     conf=$(jq -r .regressors config.json)
     if [[ $conf != "null" ]];then
-        optional="$optional -func $DIR/$(basename $bold) -conf $DIR/$(basename $conf)"
+        optional="$optional -func $DIR/$bold -conf $DIR/$conf"
     else
-        optional="$optional -func $DIR/$(basename $bold)"
+        optional="$optional -func $DIR/$bold"
     fi
 fi
 
 mask=$(jq -r .mask config.json)
 if [[ $mask != "null" ]];then
-    optional="$optional -m $DIR/$(basename $mask)"
+    optional="$optional -m $DIR/$mask"
 fi
 
 useratlas=$(jq -r .useratlas config.json)
@@ -87,10 +87,10 @@ if [[ $useratlas != "null" ]]; then
     if [ $(echo -e "$useratlas" | wc -l) -gt 1 ]; then
         optional="$optional -ua"
         while IFS= read -r line ; do
-            optional="$optional $DIR/$(basename $line)"
+            optional="$optional $DIR/$line"
         done <<< "$useratlas"
     else
-        optional="$optional -ua $DIR/$(basename $useratlas)"
+        optional="$optional -ua $DIR/$useratlas"
     fi
 fi
 
@@ -231,7 +231,7 @@ t1w=$(jq -r .t1 config.json)
 singularity run -e docker://dpys/pynets:03a1f40583de5a7948e31741173994674a7450a2 pynets \
     $DIR/output \
     -id $(jq -r .id config.json) \
-    -anat $DIR/$(basename $t1w) \
+    -anat $DIR/$t1w \
     -work $DIR/work \
     -mod $(jq -r .mod config.json) \
     $optional
