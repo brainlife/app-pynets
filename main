@@ -1,7 +1,7 @@
 #!/bin/bash
 #PBS -l nodes=1:ppn=16,walltime=2:00:00
 #PBS -l vmem=50gb
-#PBS -N pynet
+#PBS -N PyNets
 
 # This file is used to execute PyNets on brainlife.
 # brainlife stages this git repo, writes `config.json` and execute this script.
@@ -13,6 +13,7 @@
 
 set -x
 set -e
+set -f
 
 mkdir -p output tmp
 
@@ -82,10 +83,29 @@ if [ $mask != "null" ];then
 fi
 
 useratlas=$(jq -r .useratlas config.json)
-if [ $useratlas != "null" ];then
-    optional="$optional -ua $(pwd)/$useratlas"
-else
-    optional="$optional -a $(jq -r .atlas config.json)"
+if [ $useratlas != "null" ]; then
+    if [ $(echo "$useratlas" | wc -l) -gt 1 ]; then
+        printf -v str_literal '%b' "$useratlas"
+        IFS=$'\n' read -r -a pieces <<<"$str_literal"
+        for piece in "${pieces[@]}"; do
+            optional="$optional -ua $(pwd)/$piece"
+        done
+    else
+        optional="$optional -ua $(pwd)/$useratlas"
+    fi
+fi
+
+atlas=$(jq -r .atlas config.json)
+if [ $atlas != "null" ]; then
+    if [ $(echo "$atlas" | wc -l) -gt 1 ]; then
+        printf -v str_literal '%b' "$atlas"
+        IFS=$'\n' read -r -a pieces <<<"$str_literal"
+        for piece in "${pieces[@]}"; do
+            optional="$optional -a $piece"
+        done
+    else
+        optional="$optional -a $atlas"
+    fi
 fi
 
 min_thr=$(jq -r .min_thr config.json)
@@ -110,34 +130,110 @@ fi
 [ "$(jq -r .spheres config.json)" == "true" ] && optional="$optional -spheres"
 
 prune=$(jq -r .p config.json)
-[ "$prune" != "1" ] && optional="$optional -p $prune"
+if [ "$prune" != "1" ]; then
+    optional="$optional -p $prune"
+fi
 
 norm=$(jq -r .norm config.json)
-[ "$norm" != "1" ] && optional="$optional -norm $norm"
+if [ "$norm" != "1" ]; then
+    optional="$optional -norm $norm"
+fi
 
 mplx=$(jq -r .mplx config.json)
-[ "$mplx" != "0" ] && optional="$optional -mplx $mplx"
+if [ "$mplx" != "0" ]; then
+    optional="$optional -mplx $mplx"
+fi
 
 rsn=$(jq -r .n config.json)
-[ "$rsn" != "null" ] && optional="$optional -n $rsn"
+if [ "$rsn" != "null" ]; then
+    if [ $(echo "$rsn" | wc -l) -gt 1 ]; then
+        printf -v str_literal '%b' "$rsn"
+        IFS=$'\n' read -r -a pieces <<<"$str_literal"
+        for piece in "${pieces[@]}"; do
+            optional="$optional -n $piece"
+        done
+    else
+        optional="$optional -n $rsn"
+    fi
+fi
 
 em=$(jq -r .em config.json)
-[ "$em" != "mean" ] && optional="$optional -em $em"
+if [ "$em" != "mean" ]; then
+    if [ $(echo "$em" | wc -l) -gt 1 ]; then
+        printf -v str_literal '%b' "$em"
+        IFS=$'\n' read -r -a pieces <<<"$str_literal"
+        for piece in "${pieces[@]}"; do
+            optional="$optional -em $piece"
+        done
+    else
+        optional="$optional -em $em"
+    fi
+fi
 
 sm=$(jq -r .sm config.json)
-[ "$sm" != "0" ] && optional="$optional -sm $sm"
+if [ "$sm" != "0" ]; then
+    if [ $(echo "$sm" | wc -l) -gt 1 ]; then
+        printf -v str_literal '%b' "$sm"
+        IFS=$'\n' read -r -a pieces <<<"$str_literal"
+        for piece in "${pieces[@]}"; do
+            optional="$optional -sm $piece"
+        done
+    else
+        optional="$optional -sm $sm"
+    fi
+fi
 
 hp=$(jq -r .hp config.json)
-[ "$hp" != "0" ] && optional="$optional -hp $hp"
+if [ "$hp" != "0" ]; then
+    if [ $(echo "$hp" | wc -l) -gt 1 ]; then
+        printf -v str_literal '%b' "$hp"
+        IFS=$'\n' read -r -a pieces <<<"$str_literal"
+        for piece in "${pieces[@]}"; do
+            optional="$optional -hp $piece"
+        done
+    else
+        optional="$optional -hp $hp"
+    fi
+fi
 
 dg=$(jq -r .dg config.json)
-[ "$dg" != "det" ] && optional="$optional -dg $dg"
+if [ "$dg" != "det" ]; then
+    if [ $(echo "$dg" | wc -l) -gt 1 ]; then
+        printf -v str_literal '%b' "$dg"
+        IFS=$'\n' read -r -a pieces <<<"$str_literal"
+        for piece in "${pieces[@]}"; do
+            optional="$optional -dg $piece"
+        done
+    else
+        optional="$optional -dg $dg"
+    fi
+fi
 
 ml=$(jq -r .ml config.json)
-[ "$ml" != "20" ] && optional="$optional -ml $ml"
+if [ "$ml" != "20" ]; then
+    if [ $(echo "$ml" | wc -l) -gt 1 ]; then
+        printf -v str_literal '%b' "$ml"
+        IFS=$'\n' read -r -a pieces <<<"$str_literal"
+        for piece in "${pieces[@]}"; do
+            optional="$optional -ml $piece"
+        done
+    else
+        optional="$optional -ml $ml"
+    fi
+fi
 
 tol=$(jq -r .tol config.json)
-[ "$tol" != "8" ] && optional="$optional -tol $tol"
+if [ "$tol" != "8" ]; then
+    if [ $(echo "$tol" | wc -l) -gt 1 ]; then
+        printf -v str_literal '%b' "$tol"
+        IFS=$'\n' read -r -a pieces <<<"$str_literal"
+        for piece in "${pieces[@]}"; do
+            optional="$optional -tol $piece"
+        done
+    else
+        optional="$optional -tol $tol"
+    fi
+fi
 
 singularity run -e docker://dpys/pynets:03a1f40583de5a7948e31741173994674a7450a2 pynets \
     `pwd`/output \
