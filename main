@@ -61,14 +61,14 @@ mkdir -p output tmp
 optional=""
 
 dwi=$(jq -r .dwi config.json)
-if [ $dwi != "null" ]; then
+if [[ $dwi != "null" ]]; then
     bval=`pwd`/$(jq -r .bvals config.json)
     bvec=`pwd`/$(jq -r .bvecs config.json)
     optional="$optional -dwi $(pwd)/$dwi -bval $bval -bvec $bvec"
 fi
 
 bold=$(jq -r .bold config.json)
-if [ $bold != "null" ];then
+if [[ $bold != "null" ]];then
     conf=`pwd`/$(jq -r .regressors config.json)
     if [ $conf != "null" ];then
         optional="$optional -func $(pwd)/$bold -conf $conf"
@@ -78,12 +78,12 @@ if [ $bold != "null" ];then
 fi
 
 mask=$(jq -r .mask config.json)
-if [ $mask != "null" ];then
+if [[ $mask != "null" ]];then
     optional="$optional -m $(pwd)/$mask"
 fi
 
 useratlas=$(jq -r .useratlas config.json)
-if [ $useratlas != "null" ]; then
+if [[ $useratlas != "null" ]]; then
     if [ $(echo -e "$useratlas" | wc -l) -gt 1 ]; then
         IFS=$'\n' read -r -a pieces <<<`echo -e "$useratlas"`
         optional="$optional -ua"
@@ -96,7 +96,7 @@ if [ $useratlas != "null" ]; then
 fi
 
 atlas=$(jq -r .atlas config.json)
-if [ $atlas != "null" ]; then
+if [[ $atlas != "null" ]]; then
     if [ $(echo -e "$atlas" | wc -l) -gt 1 ]; then
         IFS=$'\n' read -r -a pieces <<<`echo -e "$atlas"`
         optional="$optional -a"
@@ -112,7 +112,7 @@ min_thr=$(jq -r .min_thr config.json)
 max_thr=$(jq -r .max_thr config.json)
 step_thr=$(jq -r .step_thr config.json)
 thr=$(jq -r .thr config.json)
-if [ $min_thr != "null" ]; then
+if [[ $min_thr != "null" ]]; then
     optional="$optional -min_thr $min_thr"
     optional="$optional -max_thr $max_thr"
     optional="$optional -step_thr $step_thr"
@@ -130,22 +130,22 @@ fi
 [ "$(jq -r .spheres config.json)" == "true" ] && optional="$optional -spheres"
 
 prune=$(jq -r .p config.json)
-if [ "$prune" != "1" ]; then
+if [[ "$prune" != "1" ]]; then
     optional="$optional -p $prune"
 fi
 
 norm=$(jq -r .norm config.json)
-if [ "$norm" != "1" ]; then
+if [[ "$norm" != "1" ]]; then
     optional="$optional -norm $norm"
 fi
 
 mplx=$(jq -r .mplx config.json)
-if [ "$mplx" != "0" ]; then
+if [[ "$mplx" != "0" ]]; then
     optional="$optional -mplx $mplx"
 fi
 
 rsn=$(jq -r .n config.json)
-if [ "$rsn" != "null" ]; then
+if [[ "$rsn" != "null" ]]; then
     if [ $(echo -e "$rsn" | wc -l) -gt 1 ]; then
         IFS=$'\n' read -r -a pieces <<<`echo -e "$rsn"`
         optional="$optional -n"
@@ -158,7 +158,7 @@ if [ "$rsn" != "null" ]; then
 fi
 
 em=$(jq -r .em config.json)
-if [ "$em" != "mean" ]; then
+if [[ "$em" != "mean" ]]; then
     if [ $(echo -e "$em" | wc -l) -gt 1 ]; then
         IFS=$'\n' read -r -a pieces <<<`echo -e "$em"`
         optional="$optional -em"
@@ -171,7 +171,7 @@ if [ "$em" != "mean" ]; then
 fi
 
 sm=$(jq -r .sm config.json)
-if [ "$sm" != "0" ]; then
+if [[ "$sm" != "0" ]]; then
     if [ $(echo -e "$sm" | wc -l) -gt 1 ]; then
         IFS=$'\n' read -r -a pieces <<<`echo -e "$sm"`
         optional="$optional -sm"
@@ -184,7 +184,7 @@ if [ "$sm" != "0" ]; then
 fi
 
 hp=$(jq -r .hp config.json)
-if [ "$hp" != "0" ]; then
+if [[ "$hp" != "0" ]]; then
     if [ $(echo -e "$hp" | wc -l) -gt 1 ]; then
         IFS=$'\n' read -r -a pieces <<<`echo -e "$hp"`
         optional="$optional -hp"
@@ -197,7 +197,7 @@ if [ "$hp" != "0" ]; then
 fi
 
 dg=$(jq -r .dg config.json)
-if [ "$dg" != "det" ]; then
+if [[ "$dg" != "det" ]]; then
     if [ $(echo -e "$dg" | wc -l) -gt 1 ]; then
         IFS=$'\n' read -r -a pieces <<<`echo -e "$dg"`
         optional="$optional -dg"
@@ -210,7 +210,7 @@ if [ "$dg" != "det" ]; then
 fi
 
 ml=$(jq -r .ml config.json)
-if [ "$ml" != "20" ]; then
+if [[ "$ml" != "20" ]]; then
     if [ $(echo -e "$ml" | wc -l) -gt 1 ]; then
         IFS=$'\n' read -r -a pieces <<<`echo -e "$ml"`
         optional="$optional -ml"
@@ -223,7 +223,7 @@ if [ "$ml" != "20" ]; then
 fi
 
 tol=$(jq -r .tol config.json)
-if [ "$tol" != "10" ]; then
+if [[ "$tol" != "10" ]]; then
     if [ $(echo -e "$tol" | wc -l) -gt 1 ]; then
         IFS=$'\n' read -r -a pieces <<<`echo -e "$tol"`
         optional="$optional -tol"
