@@ -13,7 +13,6 @@
 
 set -x
 set -e
-set -f
 
 mkdir -p output tmp
 
@@ -59,47 +58,48 @@ mkdir -p output tmp
 
 #construct arguments for optional inputs
 optional=""
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 dwi=$(jq -r .dwi config.json)
 if [[ $dwi != "null" ]]; then
-    bval=`pwd`/$(jq -r .bvals config.json)
-    bvec=`pwd`/$(jq -r .bvecs config.json)
-    optional="$optional -dwi $(pwd)/$dwi -bval $bval -bvec $bvec"
+    bval=$DIR/$(jq -r .bvals config.json)
+    bvec=$DIR/$(jq -r .bvecs config.json)
+    optional="$optional -dwi $DIR/$dwi -bval $bval -bvec $bvec"
 fi
 
 bold=$(jq -r .bold config.json)
 if [[ $bold != "null" ]];then
-    conf=`pwd`/$(jq -r .regressors config.json)
+    conf=$DIR/$(jq -r .regressors config.json)
     if [ $conf != "null" ];then
-        optional="$optional -func $(pwd)/$bold -conf $conf"
+        optional="$optional -func $DIR/$bold -conf $conf"
     else
-        optional="$optional -func $(pwd)/$bold"
+        optional="$optional -func $DIR/$bold"
     fi
 fi
 
 mask=$(jq -r .mask config.json)
 if [[ $mask != "null" ]];then
-    optional="$optional -m $(pwd)/$mask"
+    optional="$optional -m $DIR/$mask"
 fi
 
 useratlas=$(jq -r .useratlas config.json)
 if [[ $useratlas != "null" ]]; then
     if [ $(echo -e "$useratlas" | wc -l) -gt 1 ]; then
-        IFS=$'\n' read -r -a pieces <<<`echo -e "$useratlas"`
         optional="$optional -ua"
+        IFS=$'\n' read -r -a pieces <<<`echo -e "$useratlas"`
         for piece in "${pieces[@]}"; do
-            optional="$optional $(pwd)/$piece"
+            optional="$optional $DIR/$piece"
         done
     else
-        optional="$optional -ua $(pwd)/$useratlas"
+        optional="$optional -ua $DIR/$useratlas"
     fi
 fi
 
 atlas=$(jq -r .atlas config.json)
 if [[ $atlas != "null" ]]; then
     if [ $(echo -e "$atlas" | wc -l) -gt 1 ]; then
-        IFS=$'\n' read -r -a pieces <<<`echo -e "$atlas"`
         optional="$optional -a"
+        IFS=$'\n' read -r -a pieces <<<`echo -e "$atlas"`
         for piece in "${pieces[@]}"; do
             optional="$optional $piece"
         done
@@ -147,8 +147,8 @@ fi
 rsn=$(jq -r .n config.json)
 if [[ "$rsn" != "null" ]]; then
     if [ $(echo -e "$rsn" | wc -l) -gt 1 ]; then
-        IFS=$'\n' read -r -a pieces <<<`echo -e "$rsn"`
         optional="$optional -n"
+        IFS=$'\n' read -r -a pieces <<<`echo -e "$rsn"`
         for piece in "${pieces[@]}"; do
             optional="$optional $piece"
         done
@@ -160,8 +160,8 @@ fi
 em=$(jq -r .em config.json)
 if [[ "$em" != "mean" ]]; then
     if [ $(echo -e "$em" | wc -l) -gt 1 ]; then
-        IFS=$'\n' read -r -a pieces <<<`echo -e "$em"`
         optional="$optional -em"
+        IFS=$'\n' read -r -a pieces <<<`echo -e "$em"`
         for piece in "${pieces[@]}"; do
             optional="$optional $piece"
         done
@@ -173,8 +173,8 @@ fi
 sm=$(jq -r .sm config.json)
 if [[ "$sm" != "0" ]]; then
     if [ $(echo -e "$sm" | wc -l) -gt 1 ]; then
-        IFS=$'\n' read -r -a pieces <<<`echo -e "$sm"`
         optional="$optional -sm"
+        IFS=$'\n' read -r -a pieces <<<`echo -e "$sm"`
         for piece in "${pieces[@]}"; do
             optional="$optional $piece"
         done
@@ -186,8 +186,8 @@ fi
 hp=$(jq -r .hp config.json)
 if [[ "$hp" != "0" ]]; then
     if [ $(echo -e "$hp" | wc -l) -gt 1 ]; then
-        IFS=$'\n' read -r -a pieces <<<`echo -e "$hp"`
         optional="$optional -hp"
+        IFS=$'\n' read -r -a pieces <<<`echo -e "$hp"`
         for piece in "${pieces[@]}"; do
             optional="$optional $piece"
         done
@@ -199,8 +199,8 @@ fi
 dg=$(jq -r .dg config.json)
 if [[ "$dg" != "det" ]]; then
     if [ $(echo -e "$dg" | wc -l) -gt 1 ]; then
-        IFS=$'\n' read -r -a pieces <<<`echo -e "$dg"`
         optional="$optional -dg"
+        IFS=$'\n' read -r -a pieces <<<`echo -e "$dg"`
         for piece in "${pieces[@]}"; do
             optional="$optional $piece"
         done
@@ -212,8 +212,8 @@ fi
 ml=$(jq -r .ml config.json)
 if [[ "$ml" != "20" ]]; then
     if [ $(echo -e "$ml" | wc -l) -gt 1 ]; then
-        IFS=$'\n' read -r -a pieces <<<`echo -e "$ml"`
         optional="$optional -ml"
+        IFS=$'\n' read -r -a pieces <<<`echo -e "$ml"`
         for piece in "${pieces[@]}"; do
             optional="$optional $piece"
         done
@@ -225,8 +225,8 @@ fi
 tol=$(jq -r .tol config.json)
 if [[ "$tol" != "10" ]]; then
     if [ $(echo -e "$tol" | wc -l) -gt 1 ]; then
-        IFS=$'\n' read -r -a pieces <<<`echo -e "$tol"`
         optional="$optional -tol"
+        IFS=$'\n' read -r -a pieces <<<`echo -e "$tol"`
         for piece in "${pieces[@]}"; do
             optional="$optional $piece"
         done
@@ -236,10 +236,10 @@ if [[ "$tol" != "10" ]]; then
 fi
 
 singularity run -e docker://dpys/pynets:03a1f40583de5a7948e31741173994674a7450a2 pynets \
-    `pwd`/output \
+    $DIR/output \
     -id $(jq -r .id config.json) \
-    -anat `pwd`/$(jq -r .t1 config.json) \
-    -work `pwd`/work \
+    -anat $DIR/$(jq -r .t1 config.json) \
+    -work $DIR/work \
     -mod $(jq -r .mod config.json) \
     $optional
 
