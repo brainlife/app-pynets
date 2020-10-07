@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -l nodes=1:ppn=16,walltime=4:00:00
-#PBS -l vmem=60gb
+#PBS -l vmem=48gb
 #PBS -N PyNets
 
 # This file is used to execute PyNets on brainlife.
@@ -242,7 +242,8 @@ singularity run -e docker://dpys/pynets:03a1f40583de5a7948e31741173994674a7450a2
     -anat `pwd`/$t1w \
     -work /tmp/work \
     -mod $(jq -r .mod config.json) \
-    -plug 'MultiProc'
+    -plug 'MultiProc' \
+    -pm '16,48'
     $optional
 
 # graph
