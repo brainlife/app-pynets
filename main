@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -l nodes=1:ppn=16,walltime=4:00:00
-#PBS -l vmem=50gb
+#PBS -l vmem=60gb
 #PBS -N PyNets
 
 # This file is used to execute PyNets on brainlife.
@@ -13,8 +13,6 @@
 
 set -x
 set -e
-
-mkdir -p output tmp
 
 # usage: pynets [-h] -id A subject id or other unique identifier
 #               [A subject id or other unique identifier ...]
@@ -57,29 +55,41 @@ mkdir -p output tmp
 
 
 #construct arguments for optional inputs
+t1w=$(jq -r .t1 config.json)
+
 optional=""
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+DIR=$(dirname $t1w)
+echo "ls dir where initial bl info read--> $DIR"
+ls -dl $DIR
+
+if [[ $DIR = "." ]]; then
+   echo "Error finding staging directory. Exiting..."
+   exit 1
+fi
+
+rm -rf /tmp/work && mkdir -p /tmp/work && chmod a+rwx /tmp/work
+rm -rf $DIR/output && mkdir -p $DIR/output && chmod a+rwx $DIR/output
 
 dwi=$(jq -r .dwi config.json)
 if [[ $dwi != "null" ]]; then
     bval=$(jq -r .bvals config.json)
     bvec=$(jq -r .bvecs config.json)
-    optional="$optional -dwi $DIR/$dwi -bval $DIR/$bval -bvec $DIR/$bvec"
+    optional="$optional -dwi `pwd`/$dwi -bval `pwd`/$bval -bvec `pwd`/$bvec"
 fi
 
 bold=$(jq -r .bold config.json)
 if [[ $bold != "null" ]];then
     conf=$(jq -r .regressors config.json)
     if [[ $conf != "null" ]];then
-        optional="$optional -func $DIR/$bold -conf $DIR/$conf"
+        optional="$optional -func `pwd`/$bold -conf `pwd`/$conf"
     else
-        optional="$optional -func $DIR/$bold"
+        optional="$optional -func `pwd`/$bold"
     fi
 fi
 
 mask=$(jq -r .mask config.json)
 if [[ $mask != "null" ]];then
-    optional="$optional -m $DIR/$mask"
+    optional="$optional -m `pwd`/$mask"
 fi
 
 useratlas=$(jq -r .useratlas config.json)
@@ -87,10 +97,10 @@ if [[ $useratlas != "null" ]]; then
     if [ $(echo -e "$useratlas" | wc -l) -gt 1 ]; then
         optional="$optional -ua"
         while IFS= read -r line ; do
-            optional="$optional $DIR/$line"
+            optional="$optional `pwd`/$line"
         done <<< "$useratlas"
     else
-        optional="$optional -ua $DIR/$useratlas"
+        optional="$optional -ua `pwd`/$useratlas"
     fi
 fi
 
@@ -226,14 +236,13 @@ if [[ "$tol" != "10" ]]; then
     fi
 fi
 
-t1w=$(jq -r .t1 config.json)
-
 singularity run -e docker://dpys/pynets:03a1f40583de5a7948e31741173994674a7450a2 pynets \
     $DIR/output \
     -id $(jq -r .id config.json) \
-    -anat $DIR/$t1w \
-    -work $DIR/work \
+    -anat `pwd`/$t1w \
+    -work /tmp/work \
     -mod $(jq -r .mod config.json) \
+    -plug 'MultiProc'
     $optional
 
 # graph
