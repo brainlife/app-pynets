@@ -58,15 +58,6 @@ set -e
 t1w=$(jq -r .t1 config.json)
 
 optional=""
-DIR=$(dirname $t1w)
-chmod -R a+rx $DIR
-echo "ls dir where initial bl info read--> $DIR"
-ls -dl $DIR
-
-if [[ $DIR = "." ]]; then
-   echo "Error finding staging directory. Exiting..."
-   exit 1
-fi
 
 rm -rf /tmp/work && mkdir -p /tmp/work && chmod a+rwx /tmp/work
 rm -rf output && mkdir -p output && chmod a+rw output
@@ -75,22 +66,22 @@ dwi=$(jq -r .dwi config.json)
 if [[ $dwi != "null" ]]; then
     bval=$(jq -r .bvals config.json)
     bvec=$(jq -r .bvecs config.json)
-    optional="$optional -dwi $(cd `dirname $dwi`; pwd)/`basename $dwi` -bval $(cd `dirname $bval`; pwd)/`basename $bval` -bvec $(cd `dirname $bvec`; pwd)/`basename $bvec`"
+    optional="$optional -dwi $PWD/$dwi -bval $PWD/$bval -bvec $PWD/$bvec"
 fi
 
 bold=$(jq -r .bold config.json)
 if [[ $bold != "null" ]];then
     conf=$(jq -r .regressors config.json)
     if [[ $conf != "null" ]];then
-        optional="$optional -func $(cd `dirname $bold`; pwd)/`basename $bold` -conf $(cd `dirname $conf`; pwd)/`basename $conf`"
+        optional="$optional -func $PWD/$bold -conf $PWD/$conf"
     else
-        optional="$optional -func $(cd `dirname $bold`; pwd)/`basename $bold`"
+        optional="$optional -func $PWD/$bold"
     fi
 fi
 
 mask=$(jq -r .mask config.json)
 if [[ $mask != "null" ]];then
-    optional="$optional -m $(cd `dirname $mask`; pwd)/`basename $mask`"
+    optional="$optional -m $PWD/$mask"
 fi
 
 useratlas=$(jq -r .useratlas config.json)
@@ -98,10 +89,10 @@ if [[ $useratlas != "null" ]]; then
     if [ $(echo -e "$useratlas" | wc -l) -gt 1 ]; then
         optional="$optional -ua"
         while IFS= read -r line ; do
-            optional="$optional $(cd `dirname $line`; pwd)/`basename $line`"
+            optional="$optional $PWD/$line"
         done <<< "$useratlas"
     else
-        optional="$optional -ua $(cd `dirname $useratlas`; pwd)/`basename $useratlas`"
+        optional="$optional -ua $PWD/$useratlas"
     fi
 fi
 
@@ -240,7 +231,7 @@ fi
 singularity run -e docker://dpys/pynets:03a1f40583de5a7948e31741173994674a7450a2 pynets \
     output \
     -id $(jq -r .id config.json) \
-    -anat $(cd `dirname $t1w`; pwd)/`basename $t1w` \
+    -anat $PWD/$t1w \
     -work /tmp/work \
     -mod $(jq -r .mod config.json) \
     -plug 'MultiProc' \
