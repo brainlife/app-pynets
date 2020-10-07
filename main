@@ -68,7 +68,7 @@ if [[ $DIR = "." ]]; then
 fi
 
 rm -rf /tmp/work && mkdir -p /tmp/work && chmod a+rwx /tmp/work
-rm -rf $DIR/output && mkdir -p $DIR/output && chmod a+rwx $DIR/output
+rm -rf output && mkdir -p output && chmod a+rw output
 
 dwi=$(jq -r .dwi config.json)
 if [[ $dwi != "null" ]]; then
@@ -237,7 +237,7 @@ if [[ "$tol" != "10" ]]; then
 fi
 
 singularity run -e docker://dpys/pynets:03a1f40583de5a7948e31741173994674a7450a2 pynets \
-    $DIR/output \
+    output \
     -id $(jq -r .id config.json) \
     -anat `pwd`/$t1w \
     -work /tmp/work \
