@@ -340,7 +340,7 @@ t1w=$(jq -r .t1 config.json)
 optional=""
 
 rm -rf /tmp/work && mkdir -p /tmp/work && chmod a+rwx /tmp/work
-#rm -rf output && mkdir -p output && chmod a+rw output
+rm -rf output && mkdir -p output && chmod a+rw output
 
 dwi=$(jq -r .dwi config.json)
 if [[ $dwi != "null" ]]; then
