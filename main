@@ -340,7 +340,7 @@ t1w=$(jq -r .t1 config.json)
 optional=""
 
 rm -rf /tmp/work && mkdir -p /tmp/work && chmod a+rwx /tmp/work
-rm -rf output && mkdir -p output && chmod a+rw output
+#rm -rf output && mkdir -p output && chmod a+rw output
 
 dwi=$(jq -r .dwi config.json)
 if [[ $dwi != "null" ]]; then
@@ -364,7 +364,7 @@ if [[ $mask != "null" ]];then
     optional="$optional -m $PWD/$mask"
 fi
 
-atlas=$(jq -r .atlas config.json)
+atlas=""$(jq -r .atlas config.json)" "$(jq -r .uatlas config.json)""
 if [[ $atlas != "null" ]]; then
     if [ $(echo -e "$atlas" | wc -l) -gt 1 ]; then
         optional="$optional -a"
@@ -403,7 +403,7 @@ if [[ "$prune" != "0" ]]; then
 fi
 
 norm=$(jq -r .norm config.json)
-if [[ "$norm" != "0" ]]; then
+if [[ "$norm" != "1" ]]; then
     optional="$optional -norm $norm"
 fi
 
@@ -504,7 +504,7 @@ singularity run -e docker://dpys/dpys/pynets:548e7e3fb7f9e93562146e42b90478a5c76
     -mod $(jq -r .mod config.json) \
     -plug 'MultiProc' \
     -pm '16,48'
-    $optional
+    `echo $optional | tr -s " "`
 
 # graph
 # diffusion
