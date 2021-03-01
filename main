@@ -351,22 +351,22 @@ dwi=$(jq -r .dwi config.json)
 if [[ $dwi != "null" ]]; then
     bval=$(jq -r .bvals config.json)
     bvec=$(jq -r .bvecs config.json)
-    optional="$optional -dwi `abspath($dwi)` -bval `abspath($bval)` -bvec `abspath($bvec)`"
+    optional="$optional -dwi `abspath $dwi` -bval `abspath $bval` -bvec `abspath $bvec`"
 fi
 
 bold=$(jq -r .bold config.json)
 if [[ $bold != "null" ]];then
     conf=$(jq -r .regressors config.json)
     if [[ $conf != "null" ]];then
-        optional="$optional -func `abspath($bold)` -conf `abspath($conf)`"
+        optional="$optional -func `abspath $bold` -conf `abspath $conf`"
     else
-        optional="$optional -func `abspath($bold)`"
+        optional="$optional -func `abspath $bold`"
     fi
 fi
 
 mask=$(jq -r .mask config.json)
 if [[ $mask != "null" ]];then
-    optional="$optional -m `abspath($mask)`"
+    optional="$optional -m `abspath $mask`"
 fi
 
 if [[ $atlas != "null" ]]; then
@@ -535,7 +535,7 @@ fi
 singularity run -e docker://dpys/pynets:548e7e3fb7f9e93562146e42b90478a5c7610d70 pynets \
     output \
     -id $(jq -r .id config.json) \
-    -anat `abspath($t1w)` \
+    -anat `abspath $t1w` \
     -work /tmp/work \
     -mod $(jq -r .mod config.json) \
     -plug 'MultiProc' \
