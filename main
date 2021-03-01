@@ -334,6 +334,11 @@ set -e
 #                         run. Default is /tmp/work.
 #   --version             show program's version number and exit
 
+abspath() {
+    cd "$(dirname "$1")"
+    printf "%s/%s\n" "$(pwd)" "$(basename "$1")"
+}
+
 #construct arguments for optional inputs
 t1w=$(jq -r .t1 config.json)
 
@@ -346,26 +351,31 @@ dwi=$(jq -r .dwi config.json)
 if [[ $dwi != "null" ]]; then
     bval=$(jq -r .bvals config.json)
     bvec=$(jq -r .bvecs config.json)
-    optional="$optional -dwi $PWD/$dwi -bval $PWD/$bval -bvec $PWD/$bvec"
+    optional="$optional -dwi `abspath($dwi)` -bval `abspath($bval)` -bvec `abspath($bvec)`"
 fi
 
 bold=$(jq -r .bold config.json)
 if [[ $bold != "null" ]];then
     conf=$(jq -r .regressors config.json)
     if [[ $conf != "null" ]];then
-        optional="$optional -func $PWD/$bold -conf $PWD/$conf"
+        optional="$optional -func `abspath($bold)` -conf `abspath($conf)`"
     else
-        optional="$optional -func $PWD/$bold"
+        optional="$optional -func `abspath($bold)`"
     fi
 fi
 
 mask=$(jq -r .mask config.json)
 if [[ $mask != "null" ]];then
-    optional="$optional -m $PWD/$mask"
+    optional="$optional -m `abspath($mask)`"
 fi
 
-atlas=""$(jq -r .atlas config.json)" "$(jq -r .uatlas config.json)""
 if [[ $atlas != "null" ]]; then
+
+fi
+
+atlas="$(jq -r .atlas config.json)"
+uatlas="$(jq -r .uatlas config.json)"
+if [[ $atlas != "null" ]] && [[ $uatlas == "null" ]]; then
     if [ $(echo -e "$atlas" | wc -l) -gt 1 ]; then
         optional="$optional -a"
         while IFS= read -r line ; do
@@ -373,6 +383,32 @@ if [[ $atlas != "null" ]]; then
         done <<< "$atlas"
     else
         optional="$optional -a $atlas"
+    fi
+elif [[ $uatlas != "null" ]] && [[ $atlas == "null" ]]; then
+    if [ $(echo -e "$uatlas" | wc -l) -gt 1 ]; then
+        optional="$optional -a"
+        while IFS= read -r line ; do
+            optional="$optional $line"
+        done <<< "$uatlas"
+    else
+        optional="$optional -a $uatlas"
+    fi
+elif [[ $uatlas != "null" ]] && [[ $atlas != "null" ]]; then
+    if [ $(echo -e "$uatlas" | wc -l) -gt 1 ]; then
+        optional="$optional -a"
+        while IFS= read -r line ; do
+            optional="$optional $line"
+        done <<< "$uatlas"
+    else
+        optional="$optional -a $uatlas"
+    fi
+    if [ $(echo -e "$atlas" | wc -l) -gt 1 ]; then
+        optional="$optional "
+        while IFS= read -r line ; do
+            optional="$optional $line"
+        done <<< "$atlas"
+    else
+        optional="$optional $atlas"
     fi
 fi
 
@@ -496,10 +532,10 @@ if [[ "$tol" != "5" ]]; then
     fi
 fi
 
-singularity run -e docker://dpys/dpys/pynets:548e7e3fb7f9e93562146e42b90478a5c7610d70 pynets \
+singularity exec --cleanenv -e docker://dpys/dpys/pynets:548e7e3fb7f9e93562146e42b90478a5c7610d70 pynets \
     output \
     -id $(jq -r .id config.json) \
-    -anat $PWD/$t1w \
+    -anat `abspath($t1w)` \
     -work /tmp/work \
     -mod $(jq -r .mod config.json) \
     -plug 'MultiProc' \
