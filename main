@@ -345,7 +345,7 @@ t1w=$(jq -r .t1 config.json)
 optional=""
 
 rm -rf /tmp/work && mkdir -p /tmp/work && chmod a+rwx /tmp/work
-#rm -rf output && mkdir -p output && chmod a+rw output
+rm -rf output && mkdir -p output && chmod a+rw output
 
 dwi=$(jq -r .dwi config.json)
 if [[ $dwi != "null" ]]; then
@@ -532,7 +532,7 @@ if [[ "$tol" != "5" ]]; then
     fi
 fi
 
-singularity exec --cleanenv -e docker://dpys/dpys/pynets:548e7e3fb7f9e93562146e42b90478a5c7610d70 pynets \
+singularity run -e docker://dpys/pynets:548e7e3fb7f9e93562146e42b90478a5c7610d70 pynets \
     output \
     -id $(jq -r .id config.json) \
     -anat `abspath($t1w)` \
