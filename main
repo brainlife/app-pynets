@@ -336,7 +336,7 @@ set -e
 
 abspath() {
     cd "$(dirname "$1")"
-    printf "%s/%s\n" "$(pwd)" "$(basename "$1")"
+    printf "%s/%s" "$PWD" "$(basename "$1")"
 }
 
 #construct arguments for optional inputs
