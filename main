@@ -369,10 +369,6 @@ if [[ $mask != "null" ]];then
     optional="$optional -m `abspath $mask`"
 fi
 
-if [[ $atlas != "null" ]]; then
-
-fi
-
 atlas="$(jq -r .atlas config.json)"
 uatlas="$(jq -r .uatlas config.json)"
 if [[ $atlas != "null" ]] && [[ $uatlas == "null" ]]; then
