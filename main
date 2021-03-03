@@ -453,15 +453,15 @@ if [[ "$rsn" != "null" ]]; then
     fi
 fi
 
-em=$(jq -r .em config.json)
-if [[ "$em" != "mean" ]]; then
-    if [ $(echo -e "$em" | wc -l) -gt 1 ]; then
-        optional="$optional -em"
+es=$(jq -r .es config.json)
+if [[ "$es" != "mean" ]]; then
+    if [ $(echo -e "$es" | wc -l) -gt 1 ]; then
+        optional="$optional -es"
         while IFS= read -r line ; do
             optional="$optional $line"
-        done <<< "$em"
+        done <<< "$es"
     else
-        optional="$optional -em $em"
+        optional="$optional -es $es"
     fi
 fi
 
