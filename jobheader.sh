@@ -10,5 +10,5 @@ fi
 
 echo "#SBATCH --nodes=1"
 echo "#SBATCH --ntasks-per-node=1"
-echo "#SBATCH --mem=60G"
+echo "#SBATCH --mem=48G"
 echo "#SBATCH -t $walltime"
