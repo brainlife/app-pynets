@@ -334,10 +334,7 @@ set -e
 #                         run. Default is /tmp/work.
 #   --version             show program's version number and exit
 
-abspath() {
-    cd "$(dirname "$1")"
-    printf "%s/%s" "$PWD" "$(basename "$1")"
-}
+function abspath { echo $(cd $(dirname $1); pwd)/$(basename $1); }
 
 #construct arguments for optional inputs
 t1w=$(jq -r .t1 config.json)
@@ -385,18 +382,18 @@ elif [[ $uatlas != "null" ]] && [[ $atlas == "null" ]]; then
         optional="$optional -a"
         while IFS= read -r line ; do
             optional="$optional $line"
-        done <<< "$uatlas"
+        done <<< `abspath "$uatlas"`
     else
-        optional="$optional -a $uatlas"
+        optional="$optional -a `abspath $uatlas`"
     fi
 elif [[ $uatlas != "null" ]] && [[ $atlas != "null" ]]; then
     if [ $(echo -e "$uatlas" | wc -l) -gt 1 ]; then
         optional="$optional -a"
         while IFS= read -r line ; do
             optional="$optional $line"
-        done <<< "$uatlas"
+        done <<< `abspath "$uatlas"`
     else
-        optional="$optional -a $uatlas"
+        optional="$optional -a `abspath $uatlas`"
     fi
     if [ $(echo -e "$atlas" | wc -l) -gt 1 ]; then
         optional="$optional "
