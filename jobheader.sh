@@ -8,7 +8,6 @@ else
     walltime=2:00:00
 fi
 
-echo "#SBATCH --nodes=1"
-echo "#SBATCH --ntasks-per-node=1"
-echo "#SBATCH --mem=48G"
-echo "#SBATCH -t $walltime"
+echo "#PBS -l nodes=1:ppn=1,walltime="$walltime""
+echo "#PBS -l vmem=48gb"
+echo "#PBS -N PyNets"
