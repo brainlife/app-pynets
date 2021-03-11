@@ -521,7 +521,7 @@ if [[ "$tol" != "5" ]]; then
     fi
 fi
 
-singularity run -e docker://dpys/pynets:5377f9d6a0cee65a8a2b70220c05528654be4236 pynets \
+singularity run -e docker://dpys/pynets:07604a2fd0d76dbf47c11e6668803df0abf7e5d5 pynets \
     "$PWD"/output \
     -id $(jq -r .id config.json) \
     -anat `abspath $t1w` \
