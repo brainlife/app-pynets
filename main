@@ -528,9 +528,6 @@ singularity run -e docker://dpys/pynets:89211aaa7044a0f0527e2f721bff6b0466131559
     -work /tmp/work \
     -mod $(jq -r .mod config.json) \
     -plug 'MultiProc' \
+    -pm '56,87'
     $optional
 
-# graph
-# diffusion
-# diffusion / functional
-# functional
