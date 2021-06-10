@@ -357,6 +357,11 @@ if [[ $bold != "null" ]];then
     fi
 fi
 
+if [[ $bold == "null" ]] && [[ $dwi == "null" ]];then
+    echo "\n\nAt least one of BOLD and DWI are required!"
+    exit 1
+fi
+
 mask=$(jq -r .mask config.json)
 if [[ $mask != "null" ]];then
     optional="$optional -m `abspath $mask`"
