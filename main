@@ -526,8 +526,8 @@ if [[ "$tol" != "5" ]]; then
     fi
 fi
 
-df -h
-du -sh /tmp
+#df -h
+#du -sh /tmp
 
 singularity run -B /dev/shm:/tmp -e docker://dpys/pynets:89211aaa7044a0f0527e2f721bff6b0466131559 pynets \
     "$PWD"/output \
