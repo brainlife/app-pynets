@@ -9,5 +9,5 @@ else
 fi
 
 echo "#PBS -l nodes=1:ppn=1,walltime="$walltime""
-echo "#PBS -l vmem=64gb"
+echo "#PBS -l vmem=48gb"
 echo "#PBS -N PyNets"
