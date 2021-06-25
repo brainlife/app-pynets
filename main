@@ -332,8 +332,17 @@ set -e
 
 function abspath { echo $(cd $(dirname $1); pwd)/$(basename $1); }
 
-#construct arguments for optional inputs
+#construct arguments for inputs
 t1w=$(jq -r .t1 config.json)
+
+id=$(jq -r .id config.json)
+if [[ $id == "null" ]];then
+    sub_arr=(${t1w//sub-/ })
+    sub=`echo ${sub_arr[1]} | cut -d/ -f1`
+    ses_arr=(${t1w//ses-/ })
+    ses=`echo ${ses_arr[1]} | cut -d/ -f1`
+    id="$sub"_"$ses"
+fi
 
 optional=""
 
@@ -531,7 +540,7 @@ fi
 
 singularity run -B /dev/shm:/tmp -e docker://dpys/pynets:89211aaa7044a0f0527e2f721bff6b0466131559 pynets \
     "$PWD"/output \
-    -id $(jq -r .id config.json) \
+    -id $id \
     -anat `abspath $t1w` \
     -work /tmp/work \
     -mod $(jq -r .mod config.json) \
