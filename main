@@ -336,7 +336,9 @@ function abspath { echo $(cd $(dirname $1); pwd)/$(basename $1); }
 t1w=$(jq -r .t1 config.json)
 
 id=$(jq -r .id config.json)
-if [[ $id == "null" ]];then
+if [[ $id != "null" ]]; then
+    echo "\n\n\n\n$id\n\n\n"
+else;
     sub_arr=(${t1w//sub-/ })
     sub=`echo ${sub_arr[1]} | cut -d/ -f1`
     ses_arr=(${t1w//ses-/ })
