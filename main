@@ -337,9 +337,12 @@ t1w=$(jq -r .t1 config.json)
 
 id=$(jq -r .id config.json)
 if [[ $id == "null" ]] | [[ $id == '' ]]; then
-    sub_arr=(${t1w//sub-/ })
+    t1w_abs_path=`find "$(pwd)"/ -type f | grep "$t1w"`
+    echo "$t1w_abs_path"
+    
+    sub_arr=(${t1w_abs_path//sub-/ })
     sub=`echo ${sub_arr[1]} | cut -d/ -f1`
-    ses_arr=(${t1w//ses-/ })
+    ses_arr=(${t1w_abs_path//ses-/ })
     ses=`echo ${ses_arr[1]} | cut -d/ -f1`
     id="$sub"_"$ses"
     echo "\n\n\n\n"$id"\n\n\n\n"
