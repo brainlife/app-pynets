@@ -546,7 +546,7 @@ fi
 
 if [ -z "$ses" ];
     id="$sub"
-else;
+else
     id="$sub"_"$ses"
 fi
 
