@@ -339,11 +339,8 @@ t1w=$(jq -r .t1 config.json)
 
 id=$(jq -r .id config.json)
 if [[ $id == "null" ]] | [[ $id == '' ]]; then
-    t1w_abs_path=`find "$(pwd)"/ -type f | grep "$t1w"`
-    echo "$t1w_abs_path"
-
-    sub_arr=(${t1w_abs_path//sub-/ })
-    sub=`echo ${sub_arr[1]} | cut -d/ -f1 | cut -f2 -d\-`
+    sub=$(jq -r '._inputs[] | select(.id == "t1w") | .meta.subject' config.json)
+    sub=`echo $sub | cut -f2 -d\-`
 fi
 
 optional=""
@@ -356,8 +353,8 @@ if [[ $dwi != "null" ]]; then
     bval=$(jq -r .bvals config.json)
     bvec=$(jq -r .bvecs config.json)
     optional="$optional -dwi `abspath $dwi` -bval `abspath $bval` -bvec `abspath $bvec`"
-    ses_arr=(${dwi//ses-/ })
-    ses=`echo ${ses_arr[1]} | cut -d/ -f1 | cut -f2 -d\-`
+    ses=$(jq -r '._inputs[] | select(.id == "dwi") | .meta.session' config.json)
+    ses=`echo $ses | cut -f2 -d\-`
 fi
 
 bold=$(jq -r .bold config.json)
@@ -368,8 +365,8 @@ if [[ $bold != "null" ]];then
     else
         optional="$optional -func `abspath $bold`"
     fi
-    ses_arr=(${bold//ses-/ })
-    ses=`echo ${ses_arr[1]} | cut -d/ -f1 | cut -f2 -d\-`
+    ses=$(jq -r '._inputs[] | select(.id == "bold") | .meta.session' config.json)
+    ses=`echo $ses | cut -f2 -d\-`
 fi
 
 if [[ $bold == "null" ]] && [[ $dwi == "null" ]];then
