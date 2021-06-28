@@ -351,25 +351,22 @@ if [[ $id == "null" ]] | [[ $id == '' ]]; then
     import json
     with open('config.json') as f:
         config = json.load(f)
-    #look for thing I want
     for input in config["_inputs"]:
         if input["id"] == "freesurfer":
             print(input["meta"]["subject"])
-            #print(input["meta"])
-    EOF)
+    EOF
+    )
     echo subject is $subject
 
     session=$(python <<EOF
     import json
     with open('config.json') as f:
         config = json.load(f)
-    #look for thing I want
     for input in config["_inputs"]:
         if input["id"] == "freesurfer":
             print(input["meta"]["session"])
-            #print(input["meta"])
-    EOF)
-    echo session is $session
+    EOF
+    )
 
     sub=`echo $subject | cut -f2 -d\-`
     ses=`echo $session | cut -f2 -d\-`
