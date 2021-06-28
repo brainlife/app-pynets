@@ -544,7 +544,7 @@ fi
 #df -h
 #du -sh /tmp
 
-if [ -z "$ses" ];
+if [ -z "$ses" ]; then
     id="$sub"
 else
     id="$sub"_"$ses"
