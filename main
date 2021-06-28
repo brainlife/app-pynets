@@ -10,6 +10,8 @@
 set -x
 set -e
 
+bl2bids
+
 # usage: pynets [-h] -id A subject id or other unique identifier
 #               [A subject id or other unique identifier ...]
 #               [-func Path to input functional file required for functional connectomes) [Path to input functional file (required for functional connectomes) ...]]
