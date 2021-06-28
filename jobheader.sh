@@ -8,6 +8,6 @@ else
     walltime=8:00:00
 fi
 
-echo "#PBS -l nodes=1:ppn=10,walltime="$walltime""
+echo "#PBS -l nodes=1:ppn=1,walltime="$walltime""
 echo "#PBS -l vmem=48gb"
 echo "#PBS -N PyNets"
