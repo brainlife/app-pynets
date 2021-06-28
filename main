@@ -10,7 +10,7 @@
 set -x
 set -e
 
-bl2bids
+#bl2bids
 
 # usage: pynets [-h] -id A subject id or other unique identifier
 #               [A subject id or other unique identifier ...]
@@ -339,13 +339,45 @@ t1w=$(jq -r .t1 config.json)
 
 id=$(jq -r .id config.json)
 if [[ $id == "null" ]] | [[ $id == '' ]]; then
-    t1w_abs_path=`find "$(pwd)"/ -type f | grep "$t1w"`
-    echo "$t1w_abs_path"
+#    t1w_abs_path=`find "$(pwd)"/ -type f | grep "$t1w"`
+#    echo "$t1w_abs_path"
     
-    sub_arr=(${t1w_abs_path//sub-/ })
-    sub=`echo ${sub_arr[1]} | cut -d/ -f1`
-    ses_arr=(${t1w_abs_path//ses-/ })
-    ses=`echo ${ses_arr[1]} | cut -d/ -f1`
+#    sub_arr=(${t1w_abs_path//sub-/ })
+#    sub=`echo ${sub_arr[1]} | cut -d/ -f1`
+#    ses_arr=(${t1w_abs_path//ses-/ })
+#    ses=`echo ${ses_arr[1]} | cut -d/ -f1`
+
+    subject=$(
+    python <<EOF
+    import json
+    with open('config.json') as f:
+        config = json.load(f)
+    #look for thing I want
+    for input in config["_inputs"]:
+        if input["id"] == "freesurfer":
+            print(input["meta"]["subject"])
+            #print(input["meta"])
+    EOF
+    )
+    echo subject is $subject
+
+    session=$(
+    python <<EOF
+    import json
+    with open('config.json') as f:
+        config = json.load(f)
+    #look for thing I want
+    for input in config["_inputs"]:
+        if input["id"] == "freesurfer":
+            print(input["meta"]["session"])
+            #print(input["meta"])
+    EOF
+    )
+    echo session is $session
+
+    sub=`echo $subject | cut -f2 -d\-`
+    ses=`echo $session | cut -f2 -d\-`
+
     id="$sub"_"$ses"
     echo "\n\n\n\n"$id"\n\n\n\n"
 fi
