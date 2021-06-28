@@ -347,8 +347,7 @@ if [[ $id == "null" ]] | [[ $id == '' ]]; then
 #    ses_arr=(${t1w_abs_path//ses-/ })
 #    ses=`echo ${ses_arr[1]} | cut -d/ -f1`
 
-    subject=$(
-    python <<EOF
+    subject=$(python <<EOF
     import json
     with open('config.json') as f:
         config = json.load(f)
@@ -357,12 +356,10 @@ if [[ $id == "null" ]] | [[ $id == '' ]]; then
         if input["id"] == "freesurfer":
             print(input["meta"]["subject"])
             #print(input["meta"])
-    EOF
-    )
+    EOF)
     echo subject is $subject
 
-    session=$(
-    python <<EOF
+    session=$(python <<EOF
     import json
     with open('config.json') as f:
         config = json.load(f)
@@ -371,8 +368,7 @@ if [[ $id == "null" ]] | [[ $id == '' ]]; then
         if input["id"] == "freesurfer":
             print(input["meta"]["session"])
             #print(input["meta"])
-    EOF
-    )
+    EOF)
     echo session is $session
 
     sub=`echo $subject | cut -f2 -d\-`
