@@ -339,8 +339,7 @@ t1w=$(jq -r .t1 config.json)
 
 id=$(jq -r .id config.json)
 if [[ $id == "null" ]] | [[ $id == '' ]]; then
-    sub=$(jq -r '._inputs[] | select(.id == "t1w") | .meta.subject' config.json)
-    sub=`echo $sub | cut -f2 -d\-`
+    sub=$(jq -r '._inputs[] | select(.id == "anat") | .meta.subject' config.json)
 fi
 
 optional=""
@@ -354,7 +353,6 @@ if [[ $dwi != "null" ]]; then
     bvec=$(jq -r .bvecs config.json)
     optional="$optional -dwi `abspath $dwi` -bval `abspath $bval` -bvec `abspath $bvec`"
     ses=$(jq -r '._inputs[] | select(.id == "dwi") | .meta.session' config.json)
-    ses=`echo $ses | cut -f2 -d\-`
 fi
 
 bold=$(jq -r .bold config.json)
@@ -365,8 +363,7 @@ if [[ $bold != "null" ]];then
     else
         optional="$optional -func `abspath $bold`"
     fi
-    ses=$(jq -r '._inputs[] | select(.id == "bold") | .meta.session' config.json)
-    ses=`echo $ses | cut -f2 -d\-`
+    ses=$(jq -r '._inputs[] | select(.id == "task") | .meta.session' config.json)
 fi
 
 if [[ $bold == "null" ]] && [[ $dwi == "null" ]];then
