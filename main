@@ -338,7 +338,7 @@ function abspath { echo $(cd $(dirname $1); pwd)/$(basename $1); }
 t1w=$(jq -r .t1 config.json)
 
 id=$(jq -r .id config.json)
-if [[ $id == "null" ]] | [[ $id == '' ]]; then
+if [[ $id == "null" ]] || [[ $id == '' ]] || [ -z $id ]; then
     sub=$(jq -r '._inputs[] | select(.id == "anat") | .meta.subject' config.json)
 fi
 
