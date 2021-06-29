@@ -552,6 +552,6 @@ singularity run -B /dev/shm:/tmp -e docker://dpys/pynets:89211aaa7044a0f0527e2f7
     -anat `abspath $t1w` \
     -work /tmp/work \
     -mod $(jq -r .mod config.json) \
-    -plug 'MultiProc' \
+    -plug 'LegacyMultiProc' \
     -pm '24,48' \
     $optional
