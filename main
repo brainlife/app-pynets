@@ -437,12 +437,12 @@ fi
 [ "$(jq -r .spheres config.json)" == "true" ] && optional="$optional -spheres"
 
 prune=$(jq -r .p config.json)
-if [[ "$prune" != "0" ]]; then
+if [[ "$prune" != "3" ]]; then
     optional="$optional -p $prune"
 fi
 
 norm=$(jq -r .norm config.json)
-if [[ "$norm" != "1" ]]; then
+if [[ "$norm" != "3" ]]; then
     optional="$optional -norm $norm"
 fi
 
@@ -464,7 +464,7 @@ if [[ "$rsn" != "null" ]]; then
 fi
 
 es=$(jq -r .es config.json)
-if [[ "$es" != "mean" ]]; then
+if [[ "$es" != "mean median maximum sum" ]]; then
     if [ $(echo -e "$es" | wc -l) -gt 1 ]; then
         optional="$optional -es"
         while IFS= read -r line ; do
@@ -476,7 +476,7 @@ if [[ "$es" != "mean" ]]; then
 fi
 
 sm=$(jq -r .sm config.json)
-if [[ "$sm" != "0" ]]; then
+if [[ "$sm" != "0 3 6" ]]; then
     if [ $(echo -e "$sm" | wc -l) -gt 1 ]; then
         optional="$optional -sm"
         while IFS= read -r line ; do
@@ -488,7 +488,7 @@ if [[ "$sm" != "0" ]]; then
 fi
 
 hp=$(jq -r .hp config.json)
-if [[ "$hp" != "0" ]]; then
+if [[ "$hp" != "0 0.028 0.08" ]]; then
     if [ $(echo -e "$hp" | wc -l) -gt 1 ]; then
         optional="$optional -hp"
         while IFS= read -r line ; do
@@ -500,7 +500,7 @@ if [[ "$hp" != "0" ]]; then
 fi
 
 dg=$(jq -r .dg config.json)
-if [[ "$dg" != "det" ]]; then
+if [[ "$dg" != "det prob" ]]; then
     if [ $(echo -e "$dg" | wc -l) -gt 1 ]; then
         optional="$optional -dg"
         while IFS= read -r line ; do
@@ -512,7 +512,7 @@ if [[ "$dg" != "det" ]]; then
 fi
 
 ml=$(jq -r .ml config.json)
-if [[ "$ml" != "0" ]]; then
+if [[ "$ml" != "0 10 30" ]]; then
     if [ $(echo -e "$ml" | wc -l) -gt 1 ]; then
         optional="$optional -ml"
         while IFS= read -r line ; do
@@ -524,7 +524,7 @@ if [[ "$ml" != "0" ]]; then
 fi
 
 tol=$(jq -r .tol config.json)
-if [[ "$tol" != "5" ]]; then
+if [[ "$tol" != "5 10" ]]; then
     if [ $(echo -e "$tol" | wc -l) -gt 1 ]; then
         optional="$optional -tol"
         while IFS= read -r line ; do
@@ -553,5 +553,5 @@ singularity run -B /dev/shm:/tmp -e docker://dpys/pynets:89211aaa7044a0f0527e2f7
     -work /tmp/work \
     -mod $(jq -r .mod config.json) \
     -plug 'MultiProc' \
-    -pm '12,48' \
+    -pm '24,48' \
     $optional
