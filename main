@@ -348,7 +348,7 @@ rm -rf /tmp/work && mkdir -p /tmp/work && chmod a+rwx /tmp/work
 rm -rf output && mkdir -p output && chmod a+rw output
 
 dwi=$(jq -r .dwi config.json)
-if [[ ($dwi != "null" || $dwi == '') ]]; then
+if [[ $dwi != "null" ]]; then
     bval=$(jq -r .bvals config.json)
     bvec=$(jq -r .bvecs config.json)
     optional="$optional -dwi `abspath $dwi` -bval `abspath $bval` -bvec `abspath $bvec`"
@@ -356,9 +356,9 @@ if [[ ($dwi != "null" || $dwi == '') ]]; then
 fi
 
 bold=$(jq -r .bold config.json)
-if [[ ($bold != "null" || $bold == '') ]]; then
+if [[ $bold != "null" ]];then
     conf=$(jq -r .regressors config.json)
-    if [[ ($conf != "null" || $conf == '') ]]; then
+    if [[ $conf != "null" ]];then
         optional="$optional -func `abspath $bold` -conf `abspath $conf`"
     else
         optional="$optional -func `abspath $bold`"
@@ -366,7 +366,7 @@ if [[ ($bold != "null" || $bold == '') ]]; then
     ses=$(jq -r '._inputs[] | select(.id == "task") | .meta.session' config.json)
 fi
 
-if [[ ($bold == "null" || $bold == '') ]] && [[ ($dwi == "null" || $dwi == '') ]];then
+if [[ $bold == "null" ]] && [[ $dwi == "null" ]];then
     echo "\n\nAt least one of BOLD and DWI are required!"
     exit 1
 fi
@@ -378,7 +378,7 @@ fi
 
 atlas="$(jq -r .atlas config.json)"
 uatlas="$(jq -r .uatlas config.json)"
-if [[ ($atlas != "null" || $atlas != '') && ($uatlas == "null" || $uatlas == '') ]]; then
+if [[ $atlas != "null" ]] && [[ $uatlas == "null" ]]; then
     if [ $(echo -e "$atlas" | wc -l) -gt 1 ]; then
         optional="$optional -a"
         while IFS= read -r line ; do
@@ -387,7 +387,7 @@ if [[ ($atlas != "null" || $atlas != '') && ($uatlas == "null" || $uatlas == '')
     else
         optional="$optional -a $atlas"
     fi
-elif [[ ($atlas == "null" || $atlas == '') && ($uatlas != "null" || $uatlas != '') ]]; then
+elif [[ $uatlas != "null" ]] && [[ $atlas == "null" ]]; then
     if [ $(echo -e "$uatlas" | wc -l) -gt 1 ]; then
         optional="$optional -a"
         while IFS= read -r line ; do
@@ -396,7 +396,7 @@ elif [[ ($atlas == "null" || $atlas == '') && ($uatlas != "null" || $uatlas != '
     else
         optional="$optional -a `abspath $uatlas`"
     fi
-elif [[ ($atlas != "null" || $atlas != '') && ($uatlas != "null" || $uatlas != '') ]]; then
+elif [[ $uatlas != "null" ]] && [[ $atlas != "null" ]]; then
     if [ $(echo -e "$uatlas" | wc -l) -gt 1 ]; then
         optional="$optional -a"
         while IFS= read -r line ; do
@@ -546,7 +546,7 @@ fi
 
 echo "\n\n\n\n"$id"\n\n\n\n"
 
-# Expand containerized cache
+# Build and expand containerized cache
 singularity build --sandbox pynets_sandbox docker://dpys/pynets:89211aaa7044a0f0527e2f721bff6b0466131559
 singularity shell --writable pynets_sandbox
 singularity build pynets.img pynets_sandbox
