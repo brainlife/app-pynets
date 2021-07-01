@@ -559,4 +559,4 @@ singularity exec --cleanenv --writable-tmpfs pynets.img pynets \
     -pm '24,48' \
     $optional
 
-m -rf /tmp/work/*
+rm -rf /tmp/work/*
