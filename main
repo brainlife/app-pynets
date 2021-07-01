@@ -548,9 +548,7 @@ fi
 echo "\n\n\n\n"$id"\n\n\n\n"
 
 # Expand containerized cache
-singularity build --sandbox pynets_sandbox docker://dpys/pynets:89211aaa7044a0f0527e2f721bff6b0466131559
-singularity build pynets.img pynets_sandbox
-./image.expand.sh --size 10000 pynets.img
+singularity pull --size 10000 --name pynets.img docker://dpys/pynets:89211aaa7044a0f0527e2f721bff6b0466131559
 
 singularity exec --cleanenv --writable-tmpfs pynets.img pynets \
     "$PWD"/output \
