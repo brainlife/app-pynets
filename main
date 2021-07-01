@@ -344,8 +344,7 @@ fi
 
 optional=""
 
-rm -rf /dev/shm/work && mkdir -p /dev/shm/work && chmod a+rwx /dev/shm/work
-#rm -rf /tmp/work && mkdir -p /tmp/work && chmod a+rwx /tmp/work
+rm -rf /tmp/work && mkdir -p /tmp/work && chmod a+rwx /tmp/work
 rm -rf output && mkdir -p output && chmod a+rw output
 
 dwi=$(jq -r .dwi config.json)
@@ -554,11 +553,10 @@ singularity exec --cleanenv --writable-tmpfs pynets.img pynets \
     "$PWD"/output \
     -id $id \
     -anat `abspath $t1w` \
-    -work /dev/shm/work \
+    -work /tmp/work \
     -mod $(jq -r .mod config.json) \
     -plug 'MultiProc' \
     -pm '24,48' \
     $optional
 
-#m -rf /tmp/*
-rm -rf /dev/shm/* &
+m -rf /tmp/work/*
