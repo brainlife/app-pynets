@@ -550,9 +550,6 @@ echo "\n\n\n\n"$id"\n\n\n\n"
 singularity pull docker://dpys/singularity-util:latest
 singularity pull pynets.sif docker://dpys/pynets:89211aaa7044a0f0527e2f721bff6b0466131559
 
-singularity build --sandbox pynets-mod/ pynets.sif
-singularity shell --writable pynets-mod/
-singularity build --writable pynets.sif pynets.sif
 singularity shell --writable pynets.sif
 
 singularity exec --cleanenv -B "$PWD":/target singularity-util_latest.sif singularity image.expand --size 10000 pynets.sif
