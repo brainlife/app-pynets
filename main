@@ -546,9 +546,11 @@ fi
 
 echo "\n\n\n\n"$id"\n\n\n\n"
 
-singularity build --sandbox pynets_sndbx docker://dpys/pynets:89211aaa7044a0f0527e2f721bff6b0466131559
-
-singularity exec --contain --cleanenv -w pynets_sndbx pynets \
+rnd_hash=`echo $RANDOM`
+singularity build --sandbox pynets_sndbx_"$rnd_hash" docker://dpys/pynets:89211aaa7044a0f0527e2f721bff6b0466131559
+singularity shell -w pynets_sndbx_"$rnd_hash"
+exit
+singularity exec --contain --cleanenv pynets_sndbx_"$rnd_hash" pynets \
     "$PWD"/output \
     -id $id \
     -anat `abspath $t1w` \
