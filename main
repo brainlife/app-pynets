@@ -546,12 +546,9 @@ fi
 
 echo "\n\n\n\n"$id"\n\n\n\n"
 
-# Expand containerized cache
-singularity pull docker://dpys/singularity-util:latest
-singularity build --writable pynets.simg docker://dpys/pynets:89211aaa7044a0f0527e2f721bff6b0466131559
-singularity exec --cleanenv -B "$PWD":/target singularity-util_latest.sif singularity image.expand --size 10000 pynets.simg
+singularity build --sandbox pynets_sndbx docker://dpys/pynets:89211aaa7044a0f0527e2f721bff6b0466131559
 
-singularity exec --cleanenv --writable-tmpfs pynets.simg pynets \
+singularity exec --contain --cleanenv -w pynets_sndbx pynets \
     "$PWD"/output \
     -id $id \
     -anat `abspath $t1w` \
@@ -562,4 +559,3 @@ singularity exec --cleanenv --writable-tmpfs pynets.simg pynets \
     $optional
 
 rm -rf /tmp/work/*
-
