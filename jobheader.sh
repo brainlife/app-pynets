@@ -8,7 +8,7 @@ elif [[ "$(jq -r .dwi config.json)" != "0" ]]; then
     ppn=1
 else
     walltime=8:00:00
-    ppn=1
+    ppn=12
 fi
 
 echo "#PBS -l nodes=1:ppn="$ppn",walltime="$walltime""
