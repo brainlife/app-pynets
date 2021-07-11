@@ -551,7 +551,7 @@ singularity exec --cleanenv docker://dpys/pynets:08c5668b6680f76c7a8cf92a25f5880
     -work /dev/shm/work \
     -mod $(jq -r .mod config.json) \
     -plug 'MultiProc' \
-    -pm '24,36' \
+    -pm '24,60' \
     $optional
 
 rm -rf /dev/shm/work/*
