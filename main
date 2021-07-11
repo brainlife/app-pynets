@@ -544,7 +544,7 @@ fi
 
 echo "\n\n\n\n"$id"\n\n\n\n"
 
-singularity exec --cleanenv docker://dpys/pynets:89211aaa7044a0f0527e2f721bff6b0466131559 pynets \
+singularity exec --cleanenv docker://dpys/pynets:08c5668b6680f76c7a8cf92a25f5880fd16d69b8 pynets \
     "$PWD"/output \
     -id $id \
     -anat `abspath $t1w` \
