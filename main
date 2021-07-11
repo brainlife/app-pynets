@@ -564,7 +564,7 @@ fi
 
 cp -a $WORKINGDIR/sing_pynets.sif $WORKINGDIR/sing_pynets_"$id".sif
 
-singularity exec --cleanenv --contain $WORKINGDIR/sing_pynets_"$id".sif pynets \
+singularity exec --cleanenv $WORKINGDIR/sing_pynets_"$id".sif pynets \
     "$PWD"/output \
     -id $id \
     -anat `abspath $t1w` \
