@@ -552,7 +552,7 @@ elif [ ! -z $SINGULARITY_CACHEDIR ]; then
     WORKINGDIR=$SINGULARITY_CACHEDIR
 elif [ ! -z $WORK ]; then
     WORKINGDIR=$WORK
-else;
+else
     mkdir -p /var/lib/singularity
     WORKINGDIR=/var/lib/singularity
 fi
