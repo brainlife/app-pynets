@@ -546,7 +546,7 @@ echo "\n\n\n\n"$id"\n\n\n\n"
 
 sync; echo 3 | sudo tee /proc/sys/vm/drop_caches && swapoff -a && swapon -a
 
-singularity exec --cleanenv docker://dpys/pynets:08c5668b6680f76c7a8cf92a25f5880fd16d69b8 pynets \
+singularity exec --cleanenv docker://dpys/pynets:4c039fd7abd7fe94dc136dd31c3f193af72e089d pynets \
     "$PWD"/output \
     -id $id \
     -anat `abspath $t1w` \
