@@ -546,7 +546,24 @@ echo "\n\n\n\n"$id"\n\n\n\n"
 
 sync; echo 3 | sudo tee /proc/sys/vm/drop_caches && swapoff -a && swapon -a
 
-singularity exec --cleanenv docker://dpys/pynets:4c039fd7abd7fe94dc136dd31c3f193af72e089d pynets \
+if [ ! -z $SCRATCH ]; then
+    WORKINGDIR=$SCRATCH
+elif [ ! -z $SINGULARITY_CACHEDIR ]; then
+    WORKINGDIR=$SINGULARITY_CACHEDIR
+elif [ ! -z $WORK ]; then
+    WORKINGDIR=$WORK
+else;
+    mkdir -p /var/lib/singularity
+    WORKINGDIR=/var/lib/singularity
+fi
+
+if [ ! -f $WORKINGDIR/sing_pynets.sif ]; then
+    singularity build $WORKINGDIR/sing_pynets.sif docker://dpys/pynets:4c039fd7abd7fe94dc136dd31c3f193af72e089d
+fi
+
+cp -a $WORKINGDIR/sing_pynets.sif $WORKINGDIR/sing_pynets_"$id".sif
+
+singularity exec --cleanenv --contain $WORKINGDIR/sing_pynets_"$id".sif pynets \
     "$PWD"/output \
     -id $id \
     -anat `abspath $t1w` \
