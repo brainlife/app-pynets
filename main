@@ -344,7 +344,7 @@ fi
 
 optional=""
 
-rm -rf /dev/shm/work && mkdir -p /dev/shm/work && chmod a+rwx /dev/shm/work
+rm -rf /tmp/work && mkdir -p /tmp/work && chmod a+rwx /tmp/work
 rm -rf output && mkdir -p output && chmod a+rw output
 
 dwi=$(jq -r .dwi config.json)
@@ -550,10 +550,10 @@ singularity exec --cleanenv docker://dpys/pynets:08c5668b6680f76c7a8cf92a25f5880
     "$PWD"/output \
     -id $id \
     -anat `abspath $t1w` \
-    -work /dev/shm/work \
+    -work /tmp/work \
     -mod $(jq -r .mod config.json) \
     -plug 'MultiProc' \
     -pm '24,60' \
     $optional
 
-rm -rf /dev/shm/work/*
+rm -rf /tmp/work/*
