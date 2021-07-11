@@ -11,5 +11,9 @@ else
     ppn=24
 fi
 
-echo "#PBS -l nodes=1:ppn="$ppn",walltime="$walltime",vmem=56gb,ncpus=24"
-echo "#PBS -N PyNets"
+#echo "#PBS -l nodes=1:ppn="$ppn",walltime="$walltime",vmem=56gb,ncpus=24"
+#echo "#PBS -N PyNets"
+echo "SBATCH --job-name=PyNets"
+echo "SBATCH --ntasks-per-node=24"
+echo "SBATCH --mem=56G"
+echo "SBATCH --time="$walltime""

@@ -549,7 +549,8 @@ sync; echo 3 | sudo tee /proc/sys/vm/drop_caches && swapoff -a && swapon -a
 if [ ! -z $SCRATCH ]; then
     WORKINGDIR=$SCRATCH
 elif [ ! -z $SINGULARITY_CACHEDIR ]; then
-    WORKINGDIR=$SINGULARITY_CACHEDIR
+    mkdir -p $SINGULARITY_CACHEDIR/tmp_sifs
+    WORKINGDIR=$SINGULARITY_CACHEDIR/tmp_sifs
 elif [ ! -z $WORK ]; then
     WORKINGDIR=$WORK
 else
