@@ -8,9 +8,8 @@ elif [[ "$(jq -r .dwi config.json)" != "0" ]]; then
     ppn=1
 else
     walltime=8:00:00
-    ppn=48
+    ppn=24
 fi
 
-echo "#PBS -l nodes=1:ppn="$ppn",walltime="$walltime""
-echo "#PBS -l vmem=48gb"
+echo "#PBS -l nodes=1:ppn="$ppn",walltime="$walltime",vmem=56gb,ncpus=24"
 echo "#PBS -N PyNets"
