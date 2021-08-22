@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH --job-name="PyNets (DWI)"
+#SBATCH --job-name="PyNets"
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
 #SBATCH --ntasks-per-node=24
 #SBATCH --mem=60G
-#SBATCH --time=48:00:00
+#SBATCH --time=12:00:00
 
 set -x
 set -e
