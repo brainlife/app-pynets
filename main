@@ -1,8 +1,10 @@
 #!/bin/bash
-#SBATCH --job-name=PyNets
+#SBATCH --job-name="PyNets"
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=1
 #SBATCH --ntasks-per-node=24
 #SBATCH --mem=56G
-#SBATCH --time=48:00:00
+#SBATCH --time=24:00:00
 
 set -x
 set -e
@@ -556,10 +558,10 @@ else
 fi
 
 if [ ! -f $WORKINGDIR/sing_pynets.sif ]; then
-    singularity build $WORKINGDIR/sing_pynets.sif docker://dpys/pynets:4c039fd7abd7fe94dc136dd31c3f193af72e089d
+    singularity build $WORKINGDIR/sing_pynets.sif docker://dpys/pynets:5508c6e91c8d2647eb3a9f8d73f5d052b464454b
 fi
 
-cp -a $WORKINGDIR/sing_pynets.sif $WORKINGDIR/sing_pynets_"$id".sif
+cp $WORKINGDIR/sing_pynets.sif $WORKINGDIR/sing_pynets_"$id".sif
 
 singularity exec --cleanenv $WORKINGDIR/sing_pynets_"$id".sif pynets \
     "$PWD"/output \
@@ -568,7 +570,7 @@ singularity exec --cleanenv $WORKINGDIR/sing_pynets_"$id".sif pynets \
     -work /tmp/work \
     -mod $(jq -r .mod config.json) \
     -plug 'MultiProc' \
-    -pm '24,42' \
+    -pm '24,56' \
     $optional
 
 rm -rf /tmp/work/*
