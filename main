@@ -543,7 +543,7 @@ fi
 
 echo "\n\n\n\n"$id"\n\n\n\n"
 
-sync; echo 3 | sudo tee /proc/sys/vm/drop_caches && swapoff -a && swapon -a
+#sync; echo 3 | tee /proc/sys/vm/drop_caches && swapoff -a && swapon -a
 
 if [ ! -z $SCRATCH ]; then
     WORKINGDIR=$SCRATCH
