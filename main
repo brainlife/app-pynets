@@ -558,7 +558,7 @@ else
 fi
 
 if [ ! -f $WORKINGDIR/sing_pynets.sif ]; then
-    singularity build $WORKINGDIR/sing_pynets.sif docker://dpys/pynets:latest
+    singularity build $WORKINGDIR/sing_pynets.sif docker://dpys/pynets:8a863390e13bb70e1751170b88b24498adea86fd
 fi
 
 cp $WORKINGDIR/sing_pynets.sif $WORKINGDIR/sing_pynets_"$id".sif
