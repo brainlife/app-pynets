@@ -3,11 +3,7 @@
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
 #SBATCH --ntasks-per-node=24
-<<<<<<< HEAD
-#SBATCH --mem=58G
-=======
 #SBATCH --mem=56G
->>>>>>> 2f8c1fcaa885fc231263f0532a5128b74011c26e
 #SBATCH --time=24:00:00
 
 set -x
@@ -562,11 +558,7 @@ else
 fi
 
 if [ ! -f $WORKINGDIR/sing_pynets.sif ]; then
-<<<<<<< HEAD
-    singularity build $WORKINGDIR/sing_pynets.sif docker://dpys/pynets:de33215b1e8cbde43139f27b241cf76fb5399888
-=======
-    singularity build $WORKINGDIR/sing_pynets.sif docker://dpys/pynets:8a863390e13bb70e1751170b88b24498adea86fd
->>>>>>> 2f8c1fcaa885fc231263f0532a5128b74011c26e
+    singularity build $WORKINGDIR/sing_pynets.sif docker://dpys/pynets:6cba040ee531cecd9f70e9d6d32ae386f4cde20f
 fi
 
 cp $WORKINGDIR/sing_pynets.sif $WORKINGDIR/sing_pynets_"$id".sif
