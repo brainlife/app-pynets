@@ -566,7 +566,7 @@ fi
 mkdir -p "$PWD"/tmp
 #singularity exec --cleanenv $WORKINGDIR/sing_pynets_"$id".sif pynets \
 export SINGULARITY_TMPDIR=$WORKINGDIR
-singularity exec --cleanenv -B "$PWD"/tmp:/tmp docker://dpys/pynets:5126c827ca8d3e00ae4d985ef871c854b6ebe53c pynets \
+singularity exec --cleanenv -B "$PWD"/tmp:/tmp docker://dpys/pynets:8c9952c76abb7a7aa1f5dc7080136727e5b2a62e pynets \
     "$PWD"/output \
     -id $id \
     -anat `abspath $t1w` \
