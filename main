@@ -557,16 +557,16 @@ else
     WORKINGDIR=/var/lib/singularity
 fi
 
-#if [ ! -f $WORKINGDIR/sing_pynets.sif ]; then
-#    singularity build $WORKINGDIR/sing_pynets.sif docker://dpys/pynets:060f878f90a09be8d1945c378d1df8c533d4e1de
-#fi
+if [ ! -f $WORKINGDIR/sing_pynets.sif ]; then
+    singularity build $WORKINGDIR/sing_pynets.sif docker://dpys/pynets:060f878f90a09be8d1945c378d1df8c533d4e1de
+fi
 
-#cp $WORKINGDIR/sing_pynets.sif $WORKINGDIR/sing_pynets_"$id".sif
+cp $WORKINGDIR/sing_pynets.sif $WORKINGDIR/sing_pynets_"$id".sif
 
 mkdir -p "$PWD"/tmp
-#singularity exec --cleanenv $WORKINGDIR/sing_pynets_"$id".sif pynets \
 export SINGULARITY_TMPDIR=$WORKINGDIR
-singularity exec --cleanenv -B "$PWD"/tmp:/tmp docker://dpys/pynets:8c9952c76abb7a7aa1f5dc7080136727e5b2a62e pynets \
+singularity exec --cleanenv $WORKINGDIR/sing_pynets_"$id".sif pynets \
+#singularity exec --cleanenv -B "$PWD"/tmp:/tmp docker://dpys/pynets:8c9952c76abb7a7aa1f5dc7080136727e5b2a62e pynets \
     "$PWD"/output \
     -id $id \
     -anat `abspath $t1w` \
