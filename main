@@ -243,7 +243,7 @@ bl2bids
 #                         tracking. Default is 10. If you wish to iterate the
 #                         pipeline across multiple minimums, separate the list
 #                         by space (e.g. 10 30 50).
-#   -tol Error margin [Error margin ...]
+#   -em Error margin [Error margin ...]
 #                         (metaparameter): Distance (in the units of the
 #                         streamlines, usually mm). If any coordinate in the
 #                         streamline is within this distance from the center of
@@ -522,15 +522,15 @@ if [[ "$ml" != "0 10 30" ]]; then
     fi
 fi
 
-tol=$(jq -r .tol config.json)
-if [[ "$tol" != "5 10" ]]; then
-    if [ $(echo -e "$tol" | wc -l) -gt 1 ]; then
-        optional="$optional -tol"
+em=$(jq -r .em config.json)
+if [[ "$em" != "5 10" ]]; then
+    if [ $(echo -e "$em" | wc -l) -gt 1 ]; then
+        optional="$optional -em"
         while IFS= read -r line ; do
             optional="$optional $line"
-        done <<< "$tol"
+        done <<< "$em"
     else
-        optional="$optional -tol $tol"
+        optional="$optional -em $em"
     fi
 fi
 
