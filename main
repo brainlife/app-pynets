@@ -38,7 +38,7 @@ bl2bids
 #               [-ct Clustering type [Clustering type ...]]
 #               [-cm Cluster mask [Cluster mask ...]]
 #               [-ml Minimum fiber length for tracking [Minimum fiber length for tracking ...]]
-#               [-tol Error margin [Error margin ...]]
+#               [-em Error margin [Error margin ...]]
 #               [-dg Direction getter [Direction getter ...]]
 #               [-norm Normalization strategy for resulting graph(s)] [-bin]
 #               [-dt] [-mst] [-p Pruning Strategy] [-df]
@@ -558,7 +558,7 @@ else
 fi
 
 if [ ! -f $WORKINGDIR/sing_pynets.sif ]; then
-    singularity build $WORKINGDIR/sing_pynets.sif docker://dpys/pynets:060f878f90a09be8d1945c378d1df8c533d4e1de
+    singularity build $WORKINGDIR/sing_pynets.sif docker://dpys/pynets:latest
 fi
 
 cp $WORKINGDIR/sing_pynets.sif $WORKINGDIR/sing_pynets_"$id".sif
