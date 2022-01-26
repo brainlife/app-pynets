@@ -436,17 +436,17 @@ fi
 [ "$(jq -r .spheres config.json)" == "true" ] && optional="$optional -spheres"
 
 prune=$(jq -r .p config.json)
-if [[ "$prune" != "3" ]]; then
+if [[ "$prune" != "null" ]]; then
     optional="$optional -p $prune"
 fi
 
 norm=$(jq -r .norm config.json)
-if [[ "$norm" != "3" ]]; then
+if [[ "$norm" != "null" ]]; then
     optional="$optional -norm $norm"
 fi
 
 mplx=$(jq -r .mplx config.json)
-if [[ "$mplx" != "0" ]]; then
+if [[ "$mplx" != "null" ]]; then
     optional="$optional -mplx $mplx"
 fi
 
@@ -463,7 +463,7 @@ if [[ "$rsn" != "null" ]]; then
 fi
 
 es=$(jq -r .es config.json)
-if [[ "$es" != "mean median maximum sum" ]]; then
+if [[ "$es" != "null" ]]; then
     if [ $(echo -e "$es" | wc -l) -gt 1 ]; then
         optional="$optional -es"
         while IFS= read -r line ; do
@@ -475,7 +475,7 @@ if [[ "$es" != "mean median maximum sum" ]]; then
 fi
 
 sm=$(jq -r .sm config.json)
-if [[ "$sm" != "0 3 6" ]]; then
+if [[ "$sm" != "null" ]]; then
     if [ $(echo -e "$sm" | wc -l) -gt 1 ]; then
         optional="$optional -sm"
         while IFS= read -r line ; do
@@ -487,7 +487,7 @@ if [[ "$sm" != "0 3 6" ]]; then
 fi
 
 hp=$(jq -r .hp config.json)
-if [[ "$hp" != "0 0.028 0.08" ]]; then
+if [[ "$hp" != "null" ]]; then
     if [ $(echo -e "$hp" | wc -l) -gt 1 ]; then
         optional="$optional -hp"
         while IFS= read -r line ; do
@@ -499,7 +499,7 @@ if [[ "$hp" != "0 0.028 0.08" ]]; then
 fi
 
 dg=$(jq -r .dg config.json)
-if [[ "$dg" != "det prob" ]]; then
+if [[ "$dg" != "null" ]]; then
     if [ $(echo -e "$dg" | wc -l) -gt 1 ]; then
         optional="$optional -dg"
         while IFS= read -r line ; do
@@ -511,7 +511,7 @@ if [[ "$dg" != "det prob" ]]; then
 fi
 
 ml=$(jq -r .ml config.json)
-if [[ "$ml" != "0 10 30" ]]; then
+if [[ "$ml" != "null" ]]; then
     if [ $(echo -e "$ml" | wc -l) -gt 1 ]; then
         optional="$optional -ml"
         while IFS= read -r line ; do
@@ -523,7 +523,7 @@ if [[ "$ml" != "0 10 30" ]]; then
 fi
 
 em=$(jq -r .em config.json)
-if [[ "$em" != "5 10" ]]; then
+if [[ "$em" != "null" ]]; then
     if [ $(echo -e "$em" | wc -l) -gt 1 ]; then
         optional="$optional -em"
         while IFS= read -r line ; do
