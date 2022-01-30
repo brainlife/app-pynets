@@ -565,7 +565,7 @@ cp $WORKINGDIR/sing_pynets.sif $WORKINGDIR/sing_pynets_"$id".sif
 
 mkdir -p "$PWD"/tmp
 export SINGULARITY_TMPDIR=$WORKINGDIR
-#singularity exec --cleanenv -B "$PWD"/tmp:/tmp docker://dpys/pynets:0d9f6de0b0084a1ae777b30513a5559bf4592e8e pynets \
+#singularity exec --cleanenv -B "$PWD"/tmp:/tmp docker://dpys/pynets:45711c4dc95302117edd04b8e0ebb63e1961b6ff pynets \
 singularity exec --cleanenv $WORKINGDIR/sing_pynets_"$id".sif pynets \
     "$PWD"/output \
     -id $id \
