@@ -9,7 +9,7 @@
 set -x
 set -e
 
-mv $HOME/.local/share/containers/cache/lob-info-cache-v1.boltdb  ~/
+mv $HOME/.local/share/containers/cache/blob-info-cache-v1.boltdb  ~/
 
 bl2bids
 
