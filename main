@@ -9,6 +9,8 @@
 set -x
 set -e
 
+rm -rf $SINGULARITY_CACHEDIR/*
+
 if [ -f $HOME/.local/share/containers/cache/blob-info-cache-v1.boltdb ]; then
     mv $HOME/.local/share/containers/cache/blob-info-cache-v1.boltdb  ~/
 fi
@@ -544,13 +546,12 @@ fi
 if [ -z "$ses" ]; then
     id="$sub"
 else
-    id="$sub"_"$ses"
+    id=`"$sub"_"$ses" | sed 's/sub\-//g' | sed 's/ses\-//g'`
 fi
 
 echo "\n\n\n\n"$id"\n\n\n\n"
 
 #sync; echo 3 | tee /proc/sys/vm/drop_caches && swapoff -a && swapon -a
-#rm -rf $SINGULARITY_CACHEDIR/*
 
 if [ ! -z $SCRATCH ]; then
     WORKINGDIR=$SCRATCH
