@@ -544,7 +544,7 @@ fi
 echo "\n\n\n\n"$id"\n\n\n\n"
 
 #sync; echo 3 | tee /proc/sys/vm/drop_caches && swapoff -a && swapon -a
-rm -rf $SINGULARITY_CACHEDIR/*
+#rm -rf $SINGULARITY_CACHEDIR/*
 
 if [ ! -z $SCRATCH ]; then
     WORKINGDIR=$SCRATCH
@@ -558,16 +558,16 @@ else
     WORKINGDIR=/var/lib/singularity
 fi
 
-if [ ! -f $WORKINGDIR/sing_pynets.sif ]; then
-    singularity build $WORKINGDIR/sing_pynets.sif docker://dpys/pynets:49ec611cce24736cc7ca14db0b5fe828c464dde5
-fi
+#if [ ! -f $WORKINGDIR/sing_pynets.sif ]; then
+#    singularity build $WORKINGDIR/sing_pynets.sif docker://dpys/pynets:49ec611cce24736cc7ca14db0b5fe828c464dde5
+#fi
 
-cp $WORKINGDIR/sing_pynets.sif $WORKINGDIR/sing_pynets_"$id".sif
+#cp $WORKINGDIR/sing_pynets.sif $WORKINGDIR/sing_pynets_"$id".sif
 
-#mkdir -p "$PWD"/tmp
-#export SINGULARITY_TMPDIR=$WORKINGDIR
-#singularity exec --cleanenv -B "$PWD"/tmp:/tmp docker://dpys/pynets:49ec611cce24736cc7ca14db0b5fe828c464dde5 pynets \
-singularity exec --cleanenv $WORKINGDIR/sing_pynets_"$id".sif pynets \
+mkdir -p "$PWD"/tmp
+export SINGULARITY_TMPDIR=$WORKINGDIR
+singularity exec --cleanenv -B "$PWD"/tmp:/tmp docker://dpys/pynets:49ec611cce24736cc7ca14db0b5fe828c464dde5 pynets \
+#singularity exec --cleanenv $WORKINGDIR/sing_pynets_"$id".sif pynets \
     "$PWD"/output \
     -id $id \
     -anat `abspath $t1w` \
