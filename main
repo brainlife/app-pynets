@@ -9,7 +9,9 @@
 set -x
 set -e
 
-mv $HOME/.local/share/containers/cache/blob-info-cache-v1.boltdb  ~/
+if [ -f $HOME/.local/share/containers/cache/blob-info-cache-v1.boltdb ]; then
+    mv $HOME/.local/share/containers/cache/blob-info-cache-v1.boltdb  ~/
+fi
 
 bl2bids
 
