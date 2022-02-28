@@ -9,7 +9,7 @@
 set -x
 set -e
 
-rm -rf $SINGULARITY_CACHEDIR/*
+#rm -rf $SINGULARITY_CACHEDIR/*
 
 if [ -f $HOME/.local/share/containers/cache/blob-info-cache-v1.boltdb ]; then
     mv $HOME/.local/share/containers/cache/blob-info-cache-v1.boltdb  ~/
@@ -304,7 +304,8 @@ bl2bids
 #                         analysis. Default is (0) which is no multiplex
 #                         analysis.
 #   -embed                Optionally use this flag if you wish to embed the
-#                         ensemble(s) produced into feature vector(s).
+#                         py-1.22.2.dist-info/METADATA'
+ensemble(s) produced into feature vector(s).
 #   -spheres              Include this flag to use spheres instead of parcels as
 #                         nodes.
 #   -n Resting-state network [Resting-state network ...]
@@ -566,14 +567,12 @@ else
 fi
 
 if [ ! -f $WORKINGDIR/sing_pynets.sif ]; then
-    singularity build $WORKINGDIR/sing_pynets.sif docker://dpys/pynets:49ec611cce24736cc7ca14db0b5fe828c464dde5
+    singularity build $WORKINGDIR/sing_pynets.sif docker://dpys/pynets:7abbc54db35fbd9e05a9a591b57342fdedca1c39
 fi
 
 cp $WORKINGDIR/sing_pynets.sif $WORKINGDIR/sing_pynets_"$id".sif
 
-#mkdir -p "$PWD"/tmp
 export SINGULARITY_TMPDIR=$WORKINGDIR
-#singularity exec --cleanenv -B "$PWD"/tmp:/tmp docker://dpys/pynets:7abbc54db35fbd9e05a9a591b57342fdedca1c39 pynets \
 singularity exec --cleanenv $WORKINGDIR/sing_pynets_"$id".sif pynets \
     "$PWD"/output \
     -id $id \
