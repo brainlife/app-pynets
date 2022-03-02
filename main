@@ -304,8 +304,7 @@ bl2bids
 #                         analysis. Default is (0) which is no multiplex
 #                         analysis.
 #   -embed                Optionally use this flag if you wish to embed the
-#                         py-1.22.2.dist-info/METADATA'
-ensemble(s) produced into feature vector(s).
+#                         ensemble(s) produced into feature vector(s).
 #   -spheres              Include this flag to use spheres instead of parcels as
 #                         nodes.
 #   -n Resting-state network [Resting-state network ...]
