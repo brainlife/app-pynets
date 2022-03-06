@@ -1,0 +1,12 @@
+Collecting dask
+  Using cached dask-2022.2.1-py3-none-any.whl (1.1 MB)
+Requirement already satisfied: partd>=0.3.10 in /usr/local/anaconda3/lib/python3.8/site-packages (from dask) (1.1.0)
+Requirement already satisfied: fsspec>=0.6.0 in /usr/local/anaconda3/lib/python3.8/site-packages (from dask) (0.8.7)
+Requirement already satisfied: cloudpickle>=1.1.1 in /usr/local/anaconda3/lib/python3.8/site-packages (from dask) (1.6.0)
+Requirement already satisfied: toolz>=0.8.2 in /usr/local/anaconda3/lib/python3.8/site-packages (from dask) (0.11.1)
+Requirement already satisfied: pyyaml>=5.3.1 in /usr/local/anaconda3/lib/python3.8/site-packages (from dask) (5.4.1)
+Requirement already satisfied: packaging>=20.0 in /usr/local/anaconda3/lib/python3.8/site-packages (from dask) (20.9)
+Requirement already satisfied: pyparsing>=2.0.2 in /usr/local/anaconda3/lib/python3.8/site-packages (from packaging>=20.0->dask) (2.4.7)
+Requirement already satisfied: locket in /usr/local/anaconda3/lib/python3.8/site-packages/locket-0.2.1-py3.8.egg (from partd>=0.3.10->dask) (0.2.1)
+Installing collected packages: dask
+Successfully installed dask-2022.2.1
