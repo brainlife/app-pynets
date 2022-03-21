@@ -566,7 +566,7 @@ else
 fi
 
 if [ ! -f $WORKINGDIR/sing_pynets.sif ]; then
-    singularity build $WORKINGDIR/sing_pynets.sif docker://dpys/pynets:6323a77edb500410cb2047a184e3f12c461c7112
+    singularity build $WORKINGDIR/sing_pynets.sif docker://dpys/pynets:30882984feee463646c454eb1a23cb44d57de2df
 fi
 
 cp $WORKINGDIR/sing_pynets.sif $WORKINGDIR/sing_pynets_"$id".sif
@@ -580,6 +580,6 @@ singularity exec --cleanenv $WORKINGDIR/sing_pynets_"$id".sif pynets \
     -mod $(jq -r .mod config.json) \
     -plug 'MultiProc' \
     $optional \
-    -pm '24,46'
+    -pm '24,48'
 
 rm -rf /tmp/work/*
