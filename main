@@ -580,6 +580,6 @@ singularity exec --cleanenv $WORKINGDIR/sing_pynets_"$id".sif pynets \
     -mod $(jq -r .mod config.json) \
     -plug 'MultiProc' \
     $optional \
-    -pm '24,48'
+    -pm '24,46'
 
 rm -rf /tmp/work/*
