@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="MIT license">
 </p>
 
-## 🧠 At a glance
+## At a glance
 
 <!-- brainlife-app:begin (generated from the App manifest; edit the manifest, not this block) -->
 
@@ -22,13 +22,13 @@ Runs the PyNets post-processing workflow (built on Nilearn and DIPY) on preproce
 
 | | |
 |---|---|
-| 📥 **Inputs** | `neuro/anat/t1w` · `neuro/func/task` (optional) · `neuro/regressors` (optional) · `neuro/dwi` (optional) · `neuro/mask` (optional) · `neuro/rois` (optional) · `neuro/parcellation/volume` (optional) |
-| 📤 **Outputs** | `raw` |
-| 🐳 **Container** | `dpys/pynets:ba6f4a4c33b1c7751bc8c781ef0191db3d2b0520` |
-| ⚙️ **Resources** | 1 CPUs · 56 GB memory · 48 h walltime |
-| 🔗 **Run it** | [doi.org/10.25663/brainlife.app.486](https://doi.org/10.25663/brainlife.app.486) |
+| **Inputs** | `neuro/anat/t1w` · `neuro/func/task` (optional) · `neuro/regressors` (optional) · `neuro/dwi` (optional) · `neuro/mask` (optional) · `neuro/rois` (optional) · `neuro/parcellation/volume` (optional) |
+| **Outputs** | `raw` |
+| **Container** | `dpys/pynets:ba6f4a4c33b1c7751bc8c781ef0191db3d2b0520` |
+| **Resources** | 1 CPUs · 56 GB memory · 48 h walltime |
+| **Run it** | [doi.org/10.25663/brainlife.app.486](https://doi.org/10.25663/brainlife.app.486) |
 
-#### 📥 Inputs
+#### Inputs
 
 | Input | Datatype | Required | Description |
 |---|---|---|---|
@@ -40,14 +40,14 @@ Runs the PyNets post-processing workflow (built on Nilearn and DIPY) on preproce
 | `waymask` | `neuro/rois` | no | Binarized Nifti1Image ROI in MNI-space to constrain tractography. |
 | `uatlas` | `neuro/parcellation/volume` | no | A volume parcellation file may be included instead of specifying a fetched or local atlas name as a configuration option. |
 
-#### 📤 Outputs
+#### Outputs
 
 | Output | Datatype | Description |
 |---|---|---|
 | `output` | `raw` | A base directory to save workflow outputs. |
 
 <details>
-<summary><b>⚙️ Parameters</b> (24)</summary>
+<summary><b>Parameters</b> (24)</summary>
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
@@ -107,7 +107,7 @@ Runs the PyNets post-processing workflow (built on Nilearn and DIPY) on preproce
 
 <!-- brainlife-app:end -->
 
-## 🔬 How it works
+## How it works
 
 [PyNets](https://pynets.readthedocs.io/) is a reproducible post-processing workflow for structural and functional connectome ensemble learning. It uses the Nilearn and DIPY fMRI and dMRI libraries to sample individual structural and functional connectome estimates across many methodological choices. For every combination of the atlases, connectivity models, tracking or time-series settings and thresholds you choose, it builds a connectome, computes graph measures and, optionally, embeds the ensemble into feature vectors.
 
@@ -115,9 +115,9 @@ The App runs the multimodal workflow: structural connectomes from the DWI, funct
 
 Because PyNets is a post-processing workflow, the inputs must already be preprocessed. At a minimum the DWI, BOLD and T1w images should be motion-corrected, and ideally also susceptibility-corrected and denoised.
 
-## 🚀 Running the App
+## Running the App
 
-### ☁️ On brainlife.io
+### On brainlife.io
 
 Open the App at [doi.org/10.25663/brainlife.app.486](https://doi.org/10.25663/brainlife.app.486) and choose:
 
@@ -136,7 +136,7 @@ Then set the ensemble you want to sample:
 
 Press **Execute**. All PyNets derivatives are archived to your project as one `raw` dataset tagged `derivatives`. Large ensembles can take up to 48 hours and need about 56 GB of memory.
 
-### 💻 Locally
+### Locally
 
 You need [Singularity/Apptainer](https://apptainer.org/), [`jq`](https://jqlang.github.io/jq/) and brainlife.io's `bl2bids` tool, which `main` calls first. `main` builds a Singularity image from `docker://dpys/pynets:ba6f4a4c33b1c7751bc8c781ef0191db3d2b0520` in `$SCRATCH`, `$SINGULARITY_CACHEDIR` or `$WORK` and runs PyNets with 24 processes and 46 GB of memory.
 
@@ -172,15 +172,15 @@ You need [Singularity/Apptainer](https://apptainer.org/), [`jq`](https://jqlang.
    ./main
    ```
 
-## 📦 Outputs
+## Outputs
 
 `output/` is the PyNets derivatives directory: the connectome ensembles and their graph measures (and embeddings and plots, if requested) for the subject. See the [PyNets documentation](https://pynets.readthedocs.io/) for its layout.
 
-## 🩺 Troubleshooting
+## Troubleshooting
 
 - **`At least one of BOLD and DWI are required!`**: neither a BOLD nor a DWI input was given. Provide a BOLD and/or a DWI input.
 
-## 📚 Citing
+## Citing
 
 > [!TIP]
 > If you use this App in your work, please cite the App, the software it builds on and brainlife.io (below). GitHub's **Cite this repository** button gives the App citation in APA and BibTeX.
@@ -195,13 +195,13 @@ A PyNets manuscript is in preparation; for now, please cite all uses with the fo
 - Hayashi S, Caron BA, Heinsfeld AS, et al. brainlife.io: a decentralized and open-source cloud platform to support neuroscience research. *Nature Methods* 21:809–813 (2024). [doi:10.1038/s41592-024-02237-2](https://doi.org/10.1038/s41592-024-02237-2)
 - Avesani P, McPherson B, Hayashi S, et al. The open diffusion data derivatives, brain data upcycling via integrated publishing of derivatives and reproducible open cloud services. *Scientific Data* 6:69 (2019). [doi:10.1038/s41597-019-0073-y](https://doi.org/10.1038/s41597-019-0073-y)
 
-## 👥 Authors
+## Authors
 
 - Derek Pisner
 
 **Contributors:** Soichi Hayashi, Giulia Bertò
 
-## 💰 Funding
+## Funding
 
 [![Wellcome-226486/Z/22/Z](https://img.shields.io/badge/Wellcome-226486%2FZ%2F22%2FZ-purple.svg)](https://wellcome.org/)
 [![NIH-NINDS-U24NS140384](https://img.shields.io/badge/NIH_NINDS-U24NS140384-green.svg)](https://reporter.nih.gov/project-details/11261037)
@@ -220,6 +220,6 @@ A PyNets manuscript is in preparation; for now, please cite all uses with the fo
 
 <sub>brainlife.io is publicly funded, and acknowledging that support helps keep it running. This App was developed with support from Wellcome, the U.S. National Institutes of Health (including the BRAIN Initiative BRAIN CONNECTS program: The Axonal Projectome EXchange, U24NS140384, and the Center for Mesoscale Connectomics, UM1NS132207) and the U.S. National Science Foundation.</sub>
 
-## ⚖️ License
+## License
 
 MIT, Copyright (c) 2020 Derek Pisner. PyNets is distributed under its own [license](https://github.com/dPys/PyNets).
